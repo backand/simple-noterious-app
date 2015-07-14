@@ -4,7 +4,7 @@ Noterious
 AngularJS note board built using Backand.
 
 Run the App
-+++++++++++
+===========
 
 You need to install all of your dependencies.
 
