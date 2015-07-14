@@ -5,7 +5,7 @@
     name="login.loginForm"
     ng-submit="login.submit(login.user, login.loginForm.$valid, login.user.register)"
     novalidate
-  >
+    >
     <p class="large">Please Sign In</p>
 
     <fieldset>
@@ -17,7 +17,7 @@
           placeholder="Enter Email"
           name="email"
           required
-        >
+          >
       </div>
       <div>
         <input
@@ -25,7 +25,7 @@
           ng-model="login.user.password"
           placeholder="Enter Password"
           required
-        >
+          >
       </div>
 
       <div class="bottom x-small">
@@ -33,14 +33,14 @@
           <input
             type="checkbox"
             ng-model="login.user.register"
-          >
+            >
           New User?
         </label>
       </div>
 
       <button type="submit" class="btn btn-default btn-sm pull-right"
-        ng-disabled="login.loading"
-      >
+              ng-disabled="login.loading"
+        >
         <span class="glyphicon glyphicon-ok"></span>
         Sign In
         <span ng-show="login.loading" class="glyphicon glyphicon-refresh"></span>
@@ -48,4 +48,32 @@
     </fieldset>
     <div ng-show="login.error" class="alert-danger">{{login.error}}</div>
   </form>
+</div>
+
+<div class="login-wrap">
+  <div class="form-signin">
+
+    <div class="large">
+      Sign in With
+    </div>
+
+    <div class="bottom x-small">
+      <label>
+        <input
+          type="checkbox"
+          ng-model="login.user.register"
+          >
+        New User?
+      </label>
+    </div>
+    <div>
+      <a class="btn btn-block btn-social"
+         ng-repeat="provider in login.providers"
+         ng-class="'btn-' + provider.name"
+         ng-click="login.socialLogin(provider)">
+        <i class="fa" ng-class="'fa-' + provider.css"></i> {{provider.label}}
+      </a>
+    </div>
+  </div>
+
 </div>

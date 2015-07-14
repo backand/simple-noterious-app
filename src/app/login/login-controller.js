@@ -8,9 +8,8 @@ angular.module('noterious')
     var x = $location.search;
 
     login.user = {
-      email: 'itay@backand.com',
-      password: 'itay1234',
-      appName: 'noterious',
+      email: '',
+      password: '',
       register: false
     };
 
@@ -67,4 +66,24 @@ angular.module('noterious')
         register: false
       };
     };
+
+    login.providers = [
+      {name: 'github', label: 'Github', url: 'www.github.com', css: 'github', id:1},
+      {name: 'google', label: 'Google', url: 'www.google.com', css: 'google-plus', id:2},
+      {name: 'facebook', label: 'Facebook', url: 'www.facebook.com', css: 'facebook', id:3}
+    ];
+
+    login.socialLogin = function (provider) {
+      UserModel.socialLogin (provider.name, login.user.register)
+        .then(function () {
+          if (!UserModel.error) {
+            $state.go('boards');
+          }
+        },
+        function () {
+          login.error = UserModel.error;
+        }
+      );
+    }
+
   });

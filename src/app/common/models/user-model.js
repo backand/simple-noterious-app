@@ -14,9 +14,9 @@ angular.module('noterious.common')
     };
 
     service.login = function (user) {
-      return Backand.signin(user.email, user.password, user.appName)
+      return Backand.signin(user.email, user.password)
         .then(
-        function () {
+        function (response) {
           service.error = '';
           return;
         },
@@ -33,14 +33,29 @@ angular.module('noterious.common')
         .then(
         function(userData) {
           service.error= '';
-          console.log('User ' + userData.username + ' created successfully!');
-          return userData.username;
+          console.log('User ' + userData.data.username + ' created successfully!');
+          return service.login(user);
         },
         function (data) {
           service.error = data.error_description || 'Unknown error from server';
-          console.log(service.error);
         }
       );
+    };
+
+    service.socialLogin = function (provider, newUser) {
+      var socialSignIn = newUser ? Backand.socialSignUp(provider) : Backand.socialSignIn(provider);
+      return socialSignIn
+        .then(function (userData) {
+          service.error = '';
+          if (newUser) {
+            console.log('User ' + userData.username + ' created successfully!');
+          }
+          return;
+        }, function (data) {
+          service.error = data && data.error_description || 'Unknown error from server';
+          console.log(service.error);
+        }
+      )
     };
 
     service.logout = function () {
