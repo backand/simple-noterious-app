@@ -1,16 +1,14 @@
 'use strict';
 
 angular.module('noterious')
-  .controller('LoginCtrl', function (UserModel, $state, $location) {
+  .controller('LoginCtrl', function (UserModel, $state) {
     var login = this;
 
     login.loading = false;
-    var x = $location.search;
 
     login.user = {
       email: '',
       password: '',
-      appName: 'noterious2',
       register: false
     };
 
@@ -22,8 +20,7 @@ angular.module('noterious')
 
           UserModel.register({
             email: login.user.email,
-            password: login.user.password,
-            appName: login.user.appName
+            password: login.user.password
           })
           .then(function() {
               $state.go('boards');
@@ -37,8 +34,7 @@ angular.module('noterious')
 
           UserModel.login({
             email: login.user.email,
-            password: login.user.password,
-            appName: login.user.appName
+            password: login.user.password
           })
           .then(function() {
             if(!UserModel.error)
@@ -63,7 +59,6 @@ angular.module('noterious')
       login.user = {
         email: '',
         password: '',
-        appName: 'noterious',
         register: false
       };
     };

@@ -9,8 +9,8 @@ angular.module('noterious', [
 ])
 .config(function ($stateProvider, $urlRouterProvider, $httpProvider, BackandProvider) {
   BackandProvider.manageDefaultHeaders();
-  BackandProvider.setAnonymousToken('');
-  BackandProvider.setSignUpToken('');
+  BackandProvider.setAnonymousToken('690d47ca-9fa0-4ec8-83ee-3d770042ba10');
+  BackandProvider.setSignUpToken('84b8ca6d-e0f1-4377-b5f5-4db1960d872e');
   //BackandProvider.setApiUrl('http://api.backand.co:8099');
   BackandProvider.setAppName('noterious2');
 
