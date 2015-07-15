@@ -8,8 +8,8 @@ angular.module('noterious')
     var x = $location.search;
 
     login.user = {
-      email: 'itay@backand.com',
-      password: 'back2014',
+      email: '',
+      password: '',
       appName: 'noterious2',
       register: false
     };
