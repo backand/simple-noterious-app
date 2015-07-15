@@ -20,7 +20,10 @@ angular.module('noterious.common')
     }
 
     service.all = function () {
-      return $http.get(getUrl()).then(extract);
+      //return $http.get(getUrl()).then(extract);
+      //call the query to get only for current user or active
+      //return $http.get(Backand.getApiUrl() + '/1/query/data/GetBoardsBasedOnCurrentUser', {params:{isPublic: 1}}).then(extract);
+      return $http.get(Backand.getApiUrl() + '/1/query/data/GetBoardsBasedOnCurrentUser?parameters=%7B%22isPublic%22:%221%22%7D').then(extract);
     };
 
     service.fetch = function (boardId) {

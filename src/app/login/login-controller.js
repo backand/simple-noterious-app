@@ -9,8 +9,8 @@ angular.module('noterious')
 
     login.user = {
       email: 'itay@backand.com',
-      password: 'itay1234',
-      appName: 'noterious',
+      password: 'back2014',
+      appName: 'noterious2',
       register: false
     };
 
