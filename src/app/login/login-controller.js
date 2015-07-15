@@ -10,6 +10,7 @@ angular.module('noterious')
     login.user = {
       email: '',
       password: '',
+      appName: 'noterious2',
       register: false
     };
 
