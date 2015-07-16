@@ -13,8 +13,6 @@ angular.module('noterious.common')
         return result.data;
     }
 
-
-
     function getUrl() {
       return Backand.getApiUrl() + '/1/objects/boards';
     }
@@ -63,8 +61,12 @@ angular.module('noterious.common')
     };
 
     self.create = function (board) {
-      return $http.post(getUrl(), board).then(extract);
+      return $http.post(getUrl()+'?returnObject=true', board).then(extract);
     };
+
+    self.createDefaultMember = function(boardId){
+      return $http.get(Backand.getApiUrl() + '/1/objects/action/boards/' + boardId + '?name=AddDefaultMember').then(extract);
+    }
 
     self.update = function (boardId, board) {
       return $http.put(getUrlForId(boardId), board).then(extract);

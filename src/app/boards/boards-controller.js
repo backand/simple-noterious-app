@@ -36,7 +36,10 @@ angular.module('noterious')
 
         BoardsModel.create(board)
           .then(function (result) {
-            ctrl.getBoards();
+            BoardsModel.createDefaultMember(result.id)
+            .then(function(){
+              ctrl.getBoards();
+            })
           })
           .catch(function (reason) {
             //
