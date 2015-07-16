@@ -3,7 +3,7 @@
     class="form-signin"
     role="form"
     name="loginCtrl.loginForm"
-    ng-submit="loginCtrl.submit(loginCtrl.user, loginCtrl.loginForm.$valid, loginCtrl.user.register)"
+    ng-submit="loginCtrl.loginForm.$valid && loginCtrl.submit()"
     novalidate
     >
     <p class="large">Please Sign In</p>

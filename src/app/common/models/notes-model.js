@@ -1,15 +1,11 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular.module('noterious.common')
-  .service('NotesModel', function ($http, $q, Backand) {
+  angular.module('noterious.common')
+    .service('NotesModel', ['$http', 'Backand', 'extractData', NotesModel]);
+
+  function NotesModel ($http, Backand, extractData) {
     var service = this;
-
-    function extract(result) {
-      if(angular.isDefined(result.data.data))
-        return result.data.data;
-      else
-        return result.data;
-    }
 
     function getUrl() {
       return Backand.getApiUrl() + '/1/objects/notes';
@@ -20,22 +16,24 @@ angular.module('noterious.common')
     }
 
     service.all = function () {
-      return $http.get(getUrl()).then(extract);
+      return $http.get(getUrl()).then(extractData);
     };
 
     service.fetch = function (noteId) {
-      return $http.get(getUrlForId(noteId)).then(extract);
+      return $http.get(getUrlForId(noteId)).then(extractData);
     };
 
     service.create = function (note) {
-      return $http.post(getUrl(), note).then(extract);
+      return $http.post(getUrl(), note).then(extractData);
     };
 
     service.update = function (noteId, note) {
-      return $http.put(getUrlForId(noteId), note).then(extract);
+      return $http.put(getUrlForId(noteId), note).then(extractData);
     };
 
     service.destroy = function (noteId) {
-      return $http.delete(getUrlForId(noteId)).then(extract);
+      return $http.delete(getUrlForId(noteId)).then(extractData);
     };
-  });
+  }
+
+})();

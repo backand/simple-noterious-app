@@ -3,24 +3,24 @@
     <button
         type="button"
         class="close"
-        ng-click="ctrl.deleteNote(noteId)">
+        ng-click="noteCtrl.deleteNote()">
       &times;
     </button>
     <div>
       <input
           type="text"
           class="medium"
-          ng-model="note.title"
-          ng-blur="ctrl.updateNote(noteId, note)"
+          ng-model="noteCtrl.note.title"
+          ng-blur="noteCtrl.updateNote()"
           placeholder="Note Title">
     </div>
     <div>
       <textarea
-          ng-model="note.content"
-          ng-blur="ctrl.updateNote(noteId, note)"
+          ng-model="noteCtrl.note.content"
+          ng-blur="noteCtrl.updateNote()"
           placeholder="Note content">
       </textarea>
     </div>
-    <span ng-show="ctrl.loading" class="glyphicon glyphicon-refresh"></span>
+    <span ng-show="noteCtrl.loading" class="glyphicon glyphicon-refresh"></span>
   </div>
 </div>

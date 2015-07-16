@@ -49,7 +49,6 @@
           class="col-sm-4"
           ng-repeat="(id, note) in notesCtrl.notes"
           note="note"
-          note-id="{{note.id}}"
           update="notesCtrl.updateNote(noteId, note, isValid)"
           remove="notesCtrl.deleteNote(noteId)">
       </div>

@@ -1,32 +1,37 @@
-angular.module('noterious')
-  .directive('note', function(){
-    var controller = function($scope) {
-      var ctrl = this
+(function () {
+  'use strict';
 
-      ctrl.loading = false;
+  angular.module('noterious')
+    .directive('note', [NoteDirective]);
 
-      ctrl.updateNote = function (noteId, note) {
-        ctrl.loading = true;
-
-        $scope.update({noteId: noteId, note: note, isValid: true});
-
-      };
-
-      ctrl.deleteNote = function (noteId) {
-        $scope.remove({noteId:noteId});
-      };
-    };
-
+  function NoteDirective () {
     return {
       scope: {
-        noteId: '@',
         note:'=',
         remove:'&',
         update: '&'
       },
       templateUrl: 'app/notes/note.tmpl.html',
-      controller: controller,
-      controllerAs: 'ctrl'
+      controller: NoteController,
+      controllerAs: 'noteCtrl',
+      bindToController: true
     }
-  })
-;
+  }
+
+  function NoteController () {
+    var self = this;
+
+    self.loading = false;
+
+    self.updateNote = function () {
+      self.loading = true;
+
+      self.update({noteId: self.note.id, note: self.note, isValid: true});
+    };
+
+    self.deleteNote = function () {
+      self.remove({noteId: self.note.id});
+    };
+  }
+
+})();

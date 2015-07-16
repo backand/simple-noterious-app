@@ -1,19 +1,18 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular.module('noterious.common')
-  .service('MemberModel', function ($http, $q, Backand) {
+  angular.module('noterious.common')
+    .service('MemberModel', ['$http', 'Backand', 'extractData', MemberModel]);
+
+  function MemberModel($http, Backand, extractData) {
     var self = this;
-
-    function extract(result) {
-      return angular.isDefined(result.data.data) ? result.data.data : result.data;
-    }
 
     function getUrl() {
       return Backand.getApiUrl() + '/1/objects/users_boards';
     }
 
-    function getUsersBoardsForId(usersBoarsdId) {
-      return Backand.getApiUrl() + '/1/objects/users_boards/' + usersBoarsdId;
+    function getUsersBoardsForId(usersBoardsId) {
+      return Backand.getApiUrl() + '/1/objects/users_boards/' + usersBoardsId;
     }
 
     self.create = function (boardId, userId) {
@@ -23,11 +22,13 @@ angular.module('noterious.common')
           "member": userId,
           "board": boardId
         })
-        .then(extract);
+        .then(extractData);
     };
 
-    self.destroy = function (users_boards_id) {
-      return $http.delete(getUsersBoardsForId(users_boards_id))
-        .then(extract);
+    self.destroy = function (usersBoardsId) {
+      return $http.delete(getUsersBoardsForId(usersBoardsId))
+        .then(extractData);
     };
-  });
+  }
+
+})();

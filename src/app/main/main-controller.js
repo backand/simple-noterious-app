@@ -1,7 +1,10 @@
-'use strict';
+(function () {
+ 'use strict';
 
-angular.module('noterious')
-  .controller('MainCtrl', function (UserModel, $window) {
+  angular.module('noterious')
+    .controller('MainCtrl', ['UserModel', MainCtrl]);
+
+  function MainCtrl (UserModel) {
     var main = this;
     main.currentColor = 'blue';
 
@@ -20,4 +23,6 @@ angular.module('noterious')
     main.logout = function () {
       UserModel.logout();
     };
-  });
+  }
+
+})();

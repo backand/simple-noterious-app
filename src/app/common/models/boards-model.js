@@ -1,17 +1,15 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular.module('noterious.common')
-  .service('BoardsModel', function ($http, $q, Backand, MemberModel) {
+  angular.module('noterious.common')
+    .service('BoardsModel', ['$http', 'Backand', 'MemberModel', 'extractData', BoardsModel]);
+
+  function BoardsModel($http, Backand, MemberModel, extractData) {
     var self = this;
 
-    self.boards = [];
-
-    function extract(result) {
-      if(angular.isDefined(result.data.data))
-        return result.data.data;
-      else
-        return result.data;
-    }
+    self._init = function () {
+      self.boards = [];
+    };
 
     function getUrl() {
       return Backand.getApiUrl() + '/1/objects/boards';
@@ -21,62 +19,92 @@ angular.module('noterious.common')
       return Backand.getApiUrl() + '/1/objects/boards/' + boardId;
     }
 
-    function updateBoards (boards) {
+    function updateBoards(boards) {
       return angular.copy(boards, self.boards);
     }
 
     self.all = function () {
-      //return $http.get(getUrl()).then(extract);
+      return $http.get(getUrl()).then(extractData);
+    };
+
+    self.getUsersBoards = function () {
       //call the query to get only for current user or active
-      return $http.get(Backand.getApiUrl() + '/1/query/data/GetBoardsBasedOnCurrentUser', {params:{parameters: {isPublic: 1}}})
-        .then(extract)
+      return $http.get(Backand.getApiUrl() +
+        '/1/query/data/GetBoardsBasedOnCurrentUser',
+        {
+          params: {
+            parameters: {
+              isPublic: 1}
+          }
+        }
+      )
+        .then(extractData)
         .then(updateBoards)
         .then(addBoardMembers);
     };
 
     //Update the users members for each board
-    function addBoardMembers () {
-      var promises = [];
-      angular.forEach(self.boards, function (board) {
-        var response = $q.all([self.getBoardMembers(board.id)])
-
-            .then(function (results) {
-              board.allMembers = results[0];
-              return board;
-            });
-
-        promises.push(response);
+    function addBoardMembers() {
+      self.boards.forEach(function (board) {
+        reformatBoardData(board);
+        self.getBoardMembers(board.id)
+          .then(function (result) {
+            board.allMembers = result;
+            return board;
+          });
       });
-
-      return $q.all(promises);
+      return self.boards;
     }
 
     self.getBoardMembers = function (boardId) {
-      return $http.get(Backand.getApiUrl() + '/1/query/data/GetBoardsMemebers',{params:{parameters: {board: boardId}}})
-        .then(extract)
+      return $http.get(Backand.getApiUrl() +
+        '/1/query/data/GetBoardsMemebers',
+        {
+          params: {
+            parameters: {
+              board: boardId
+            }
+          }
+        }
+      )
+        .then(extractData)
     };
 
+    function reformatBoardData (board) {
+      board.isPublic = !!board.isPublic;
+    }
+
     self.fetch = function (boardId) {
-      return $http.get(getUrlForId(boardId)+'?deep=true').then(extract);
+      return $http.get(getUrlForId(boardId) + '?deep=true').then(extractData);
     };
 
     self.create = function (board) {
-      return $http.post(getUrl()+'?returnObject=true', board).then(extract);
+      return $http.post(getUrl() + '?returnObject=true', board)
+        .then(extractData)
+        .then(createDefaultMember)
+        .then(self.getUsersBoards);
     };
 
-    self.createDefaultMember = function(boardId){
-      return $http.get(Backand.getApiUrl() + '/1/objects/action/boards/' + boardId + '?name=AddDefaultMember').then(extract);
-    };
+    function createDefaultMember (board) {
+      return $http.get(Backand.getApiUrl() + '/1/objects/action/boards/' + board.id + '?name=AddDefaultMember')
+        .then(extractData);
+    }
 
     self.update = function (boardId, board) {
-      return $http.put(getUrlForId(boardId), board).then(extract);
+      return $http.put(getUrlForId(boardId), board).then(extractData);
     };
 
     self.destroy = function (boardId) {
-      return $http.delete(getUrlForId(boardId)).then(extract);
+      return $http.delete(getUrlForId(boardId)).then(extractData)
+        .then(self.getUsersBoards);
     };
 
     self.addMemberToBoard = function (boardId, member) {
       return MemberModel.create(boardId, member.id)
-    }
-  });
+    };
+
+    self._init();
+
+  }
+
+})();

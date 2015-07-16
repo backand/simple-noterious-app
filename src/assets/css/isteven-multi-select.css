@@ -33,6 +33,7 @@
 
 /* the multiselect button */
 .multiSelect > button {
+    width: 100%;
     display: inline-block;
     position: relative;
     text-align: center;    

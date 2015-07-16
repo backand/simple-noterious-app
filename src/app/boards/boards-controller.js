@@ -2,13 +2,20 @@
 'use strict';
 
 angular.module('noterious')
-  .controller('BoardsCtrl', BoardsModel);
+  .controller('BoardsCtrl', ['BoardsModel', BoardsCtrl]);
 
-  function BoardsModel () {
+  function BoardsCtrl (BoardsModel) {
     var self = this;
 
-    self.resetForm();
-    self.getBoards();
+    self._init = function() {
+      self.boards = BoardsModel.boards;
+      self.resetForm();
+      self.getBoards();
+    };
+
+    self.getBoards = function () {
+      BoardsModel.getUsersBoards();
+    };
 
     self.resetForm = function () {
       self.newBoard = {
@@ -18,18 +25,11 @@ angular.module('noterious')
       };
     };
 
-    self.getBoards = function () {
-      BoardsModel.all()
-        .then(function (result) {
-          self.boards = (result !== 'null') ? result : {};
-        });
-    };
-
     self.createBoard = function (board, isValid) {
       if (isValid) {
         BoardsModel.create(board)
           .then(function (result) {
-            BoardsModel.createDefaultMember(result.id)
+            //
           })
           .then(function () {
               self.resetForm();
@@ -41,35 +41,7 @@ angular.module('noterious')
       }
     };
 
-    self.deleteBoard = function (boardId) {
-      BoardsModel.destroy(boardId)
-        .then(function (result) {
-          self.getBoards();
-        })
-        .catch(function (reason) {
-          //
-        })
-        .finally(function () {
-          self.cancelEditing();
-        });
-    };
-
-    self.setEditedBoard = function (boardId, board) {
-      self.editedBoardId = boardId;
-      self.editedBoard = angular.copy(board);
-      self.isEditing = true;
-    };
-
-    self.isCurrentBoard = function (boardId) {
-      return self.editedBoard !== null && self.editedBoardId === boardId;
-    };
-
-    self.cancelEditing = function () {
-      self.editedBoardId = null;
-      self.editedBoard = null;
-      self.isEditing = false;
-    };
-
+    self._init();
   }
 
 })();

@@ -1,106 +1,109 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular.module('noterious')
-  .controller('NotesCtrl', function (BoardsModel, NotesModel, $stateParams, $state, $scope) {
-    var ctrl = this,
-        boardId = $stateParams.boardId;
+  angular.module('noterious')
+    .controller('NotesCtrl', ['BoardsModel', 'NotesModel', '$state', NotesCtrl]);
 
-    ctrl.loading = false;
+  function NotesCtrl (BoardsModel, NotesModel, $state) {
+    var self = this;
 
-    ctrl.newNote = {
-      title: '',
-      content: ''
+    var boardId = $state.params.boardId;
+
+    self._init = function () {
+      self.resetForm();
     };
 
-    ctrl.goBack = function() {
+    self.goBack = function() {
       $state.go('boards');
     };
 
-    ctrl.resetForm = function () {
-      ctrl.loading = false;
-      ctrl.newNote = {
+    self.resetForm = function () {
+      self.loading = false;
+      self.newNote = {
         title: '',
         content: ''
       };
     };
 
-    ctrl.getBoard = function () {
+    self.getBoard = function () {
       BoardsModel.fetch(boardId)
         .then(function (board) {
-          ctrl.board = board;
-          ctrl.notes = board.notes;
+          self.board = board;
+          self.notes = board.notes;
         }, function (reason) {
           //
         });
     };
 
-    ctrl.createNote = function (note, isValid) {
+    self.createNote = function (note, isValid) {
       if (isValid) {
-        ctrl.loading = true;
+        self.loading = true;
 
         note.board = boardId;
         NotesModel.create(note)
           .then(function (result) {
-            ctrl.getBoard();
+            self.getBoard();
           })
           .catch(function (reason) {
             //
           })
           .finally(function() {
-            ctrl.resetForm();
+            self.resetForm();
           });
       }
     };
 
-    ctrl.updateNote = function (noteId, note, isValid) {
+    self.updateNote = function (noteId, note, isValid) {
       if (isValid) {
-        ctrl.loading = true;
+        self.loading = true;
 
         //note.users.push({id:3});
         delete note.users; //todo: temp until the issue with the users will be fixed
 
         NotesModel.update(noteId, note)
           .then(function () {
-            ctrl.getBoard();
+            self.getBoard();
           })
           .catch(function (reason) {
             //
           })
           .finally(function() {
-            ctrl.resetForm();
+            self.resetForm();
           });
       }
     };
 
-    ctrl.deleteNote = function (noteId) {
+    self.deleteNote = function (noteId) {
       NotesModel.destroy(noteId)
         .then(function (result) {
-          ctrl.getBoard();
+          self.getBoard();
         })
         .catch(function (reason) {
           //
         })
         .finally(function() {
-          ctrl.cancelEditing();
+          self.cancelEditing();
         });
     };
 
-    ctrl.setEditedNote = function(noteId, note) {
-      ctrl.editedNoteId = noteId;
-      ctrl.editedNote = angular.copy(note);
-      ctrl.isEditing = true;
+    self.setEditedNote = function(noteId, note) {
+      self.editedNoteId = noteId;
+      self.editedNote = angular.copy(note);
+      self.isEditing = true;
     };
 
-    ctrl.isCurrentNote = function(noteId) {
-      return ctrl.editedNote !== null && ctrl.editedNoteId === noteId;
+    self.isCurrentNote = function(noteId) {
+      return self.editedNote !== null && self.editedNoteId === noteId;
     };
 
-    ctrl.cancelEditing = function() {
-      ctrl.loading = false;
-      ctrl.editedNoteId = null;
-      ctrl.editedNote = null;
-      ctrl.isEditing = false;
+    self.cancelEditing = function() {
+      self.loading = false;
+      self.editedNoteId = null;
+      self.editedNote = null;
+      self.isEditing = false;
     };
 
-    ctrl.getBoard();
-  });
+    self.getBoard();
+  }
+
+})();

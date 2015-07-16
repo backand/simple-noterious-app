@@ -7,7 +7,6 @@
   function BoardDirective() {
     return {
       scope: {
-        boardId: '@',
         board: '=',
         remove: '&'
       },
@@ -21,12 +20,13 @@
   function BoardController(BoardsModel, MemberModel) {
     var self = this;
 
-    self.board.isPublic = !!self.board.isPublic;
-    self.loading = false;
+    self._init = function () {
+      self.loading = false;
+    };
 
     self.updateBoard = function () {
       self.loading = true;
-      BoardsModel.update(self.boardId, self.board)
+      BoardsModel.update(self.board.id, self.board)
         .catch(function (reason) {
           // alert and revert
         })
@@ -36,7 +36,13 @@
     };
 
     self.deleteBoard = function () {
-      self.remove({boardId: self.boardId});
+      BoardsModel.destroy(self.board.id)
+        .catch(function (reason) {
+          //
+        })
+        .finally(function () {
+          self.cancelEditing();
+        });
     };
 
     self.updateMember = function (member) {
@@ -44,9 +50,9 @@
     };
 
     function addMemberToBoard(member) {
-      return BoardsModel.addMemberToBoard(self.boardId, member)
-        .then(function (data) {
-          member.users_boards_id = data.id;
+      return BoardsModel.addMemberToBoard(self.board.id, member)
+        .then(function (users_boards_item) {
+          member.users_boards_id = users_boards_item.id;
         }, function (error) {
           member.users_boards_id = null;
           member.isMember = false;
@@ -61,6 +67,8 @@
           member.isMember = true;
         })
     }
+
+    self._init();
   }
 
 })();

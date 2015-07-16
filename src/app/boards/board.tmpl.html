@@ -24,7 +24,7 @@
       <input
         type="checkbox"
         ng-model="boardCtrl.board.isPublic"
-        ng-blur="boardCtrl.updateBoard()">
+        ng-change="boardCtrl.updateBoard()">
       Board is Public
     </div>
 
@@ -45,7 +45,7 @@
 
     <a
       type="button"
-      ui-sref="notes({boardId: boardCtrl.boardId})"
+      ui-sref="notes({boardId: boardCtrl.board.id})"
       class="view arrow-bottom-right btn btn-default">
       <span class="glyphicon glyphicon-arrow-right"></span>
     </a>

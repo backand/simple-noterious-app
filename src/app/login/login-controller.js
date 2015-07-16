@@ -1,81 +1,71 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular.module('noterious')
-  .controller('LoginCtrl', function (UserModel, Backand, $state) {
-    var login = this;
+  angular.module('noterious')
+    .controller('LoginCtrl', ['UserModel', 'Backand', '$state', LoginCtrl]);
 
-    login.loading = false;
+  function LoginCtrl(UserModel, Backand, $state) {
+    var self = this;
 
-    login.user = {
-      email: '',
-      password: '',
-      register: false
+    self._init = function () {
+      self.reset();
+      self.providers = Backand.getSocialProviders();
     };
 
-    login.submit = function (user, isValid, isRegistering) {
-      if (isValid) {
-        login.loading = true;
-
-        if (isRegistering) {
-
-          UserModel.register({
-            email: login.user.email,
-            password: login.user.password
-          })
-          .then(function() {
-              $state.go('boards');
-          })
-          .finally(function() {
-            login.error = UserModel.error;
-            login.reset();
-          });
-
-        } else {
-
-          UserModel.login({
-            email: login.user.email,
-            password: login.user.password
-          })
-          .then(function() {
-            if(!UserModel.error)
-              $state.go('boards');
-            else
-              login.error = UserModel.error;
-          },function(ee){
-                login.error = UserModel.error;
-              })
-          .finally(function(reason) {
-
-            login.reset();
-          });
-
-        }
-
-      }
+    self.submit = function () {
+      self.loading = true;
+      self.user.register ? register() : login();
     };
 
-    login.reset = function () {
-      login.loading = false;
-      login.user = {
+    function register() {
+      UserModel.register({
+        email: self.user.email,
+        password: self.user.password
+      })
+        .then(function () {
+          $state.go('boards');
+        })
+        .finally(function () {
+          self.error = UserModel.error;
+          self.reset();
+        });
+    }
+
+    function login() {
+      UserModel.login({
+        email: self.user.email,
+        password: self.user.password
+      })
+        .then(function () {
+          UserModel.error ? self.error = UserModel.error : $state.go('boards');
+        }, function (error) {
+          self.error = UserModel.error;
+        })
+        .finally(function (reason) {
+          self.reset();
+        });
+    }
+
+    self.reset = function () {
+      self.loading = false;
+      self.user = {
         email: '',
         password: '',
         register: false
       };
     };
 
-    login.providers = Backand.getSocialProviders();
-
-    login.socialLogin = function (provider) {
-      UserModel.socialLogin (provider.name, login.user.register)
+    self.socialLogin = function (provider) {
+      UserModel.socialLogin(provider.name, self.user.register)
         .then(function () {
-          if (!UserModel.error) {
-            $state.go('boards');
-          }
-        },
-        function () {
-          login.error = UserModel.error;
+          UserModel.error ? self.error = UserModel.error : $state.go('boards');
+        }, function () {
+          self.error = UserModel.error;
         }
       );
-    }
+    };
 
-  });
+    self._init();
+  }
+
+})();

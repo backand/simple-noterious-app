@@ -15,6 +15,6 @@
     };
   }
 
-  angular.module('noterious.common', [])
+  angular.module('noterious.common')
     .factory('httpInterceptor', ['$q', '$location', httpInterceptor]);
 })();
