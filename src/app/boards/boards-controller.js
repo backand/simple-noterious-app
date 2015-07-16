@@ -1,84 +1,75 @@
+(function () {
 'use strict';
 
 angular.module('noterious')
-  .controller('BoardsCtrl', function (BoardsModel) {
-    var ctrl = this;
+  .controller('BoardsCtrl', BoardsModel);
 
-    ctrl.loading = false;
+  function BoardsModel () {
+    var self = this;
 
-    ctrl.newBoard = {
-      title: '',
-      description: '',
-      isPublic: false
-    };
+    self.resetForm();
+    self.getBoards();
 
-    ctrl.resetForm = function () {
-      ctrl.loading = false;
-      ctrl.newBoard = {
+    self.resetForm = function () {
+      self.newBoard = {
         title: '',
         description: '',
         isPublic: false
       };
     };
 
-    ctrl.getBoards = function () {
+    self.getBoards = function () {
       BoardsModel.all()
         .then(function (result) {
-          ctrl.boards = (result !== 'null') ? result : {};
-        }, function () {
-          ctrl.resetForm();
+          self.boards = (result !== 'null') ? result : {};
         });
     };
 
-    ctrl.createBoard = function (board, isValid) {
+    self.createBoard = function (board, isValid) {
       if (isValid) {
-        ctrl.loading = true;
-
         BoardsModel.create(board)
           .then(function (result) {
             BoardsModel.createDefaultMember(result.id)
-            .then(function(){
-              ctrl.getBoards();
-            })
+          })
+          .then(function () {
+              self.resetForm();
+              self.getBoards();
           })
           .catch(function (reason) {
-            //
-          })
-          .finally(function () {
-            ctrl.resetForm();
+            // alert
           });
       }
     };
 
-    ctrl.deleteBoard = function (boardId) {
+    self.deleteBoard = function (boardId) {
       BoardsModel.destroy(boardId)
         .then(function (result) {
-          ctrl.getBoards();
+          self.getBoards();
         })
         .catch(function (reason) {
           //
         })
         .finally(function () {
-          ctrl.cancelEditing();
+          self.cancelEditing();
         });
     };
 
-    ctrl.setEditedBoard = function (boardId, board) {
-      ctrl.editedBoardId = boardId;
-      ctrl.editedBoard = angular.copy(board);
-      ctrl.isEditing = true;
+    self.setEditedBoard = function (boardId, board) {
+      self.editedBoardId = boardId;
+      self.editedBoard = angular.copy(board);
+      self.isEditing = true;
     };
 
-    ctrl.isCurrentBoard = function (boardId) {
-      return ctrl.editedBoard !== null && ctrl.editedBoardId === boardId;
+    self.isCurrentBoard = function (boardId) {
+      return self.editedBoard !== null && self.editedBoardId === boardId;
     };
 
-    ctrl.cancelEditing = function () {
-      ctrl.loading = false;
-      ctrl.editedBoardId = null;
-      ctrl.editedBoard = null;
-      ctrl.isEditing = false;
+    self.cancelEditing = function () {
+      self.editedBoardId = null;
+      self.editedBoard = null;
+      self.isEditing = false;
     };
 
-    ctrl.getBoards();
-  });
+  }
+
+})();

@@ -1,8 +1,8 @@
 <div class="board-header">
   <span
       class="large"
-      ng-click="ctrl.goBack()">
-    {{ctrl.board.title}}
+      ng-click="notesCtrl.goBack()">
+    {{notesCtrl.board.title}}
   </span>
 </div>
 <div class="container">
@@ -13,23 +13,23 @@
         <div class="create note">
           <div class="caption">
             <form
-                name="ctrl.createForm"
+                name="notesCtrl.createForm"
                 class="create-form"
                 role="form"
-                ng-submit="ctrl.createNote(ctrl.newNote, ctrl.createForm.$valid)"
+                ng-submit="notesCtrl.createNote(notesCtrl.newNote, notesCtrl.createForm.$valid)"
                 novalidate>
               <fieldset>
                 <div>
                   <input
                       type="text"
                       class="medium"
-                      ng-model="ctrl.newNote.title"
+                      ng-model="notesCtrl.newNote.title"
                       placeholder="Note Title"
                       required/>
                 </div>
                 <div>
                     <textarea
-                        ng-model="ctrl.newNote.content"
+                        ng-model="notesCtrl.newNote.content"
                         placeholder="Note content"
                         required>
                     </textarea>
@@ -47,11 +47,11 @@
       <!-- EXISTING NOTES -->
       <div
           class="col-sm-4"
-          ng-repeat="(id, note) in ctrl.notes"
+          ng-repeat="(id, note) in notesCtrl.notes"
           note="note"
           note-id="{{note.id}}"
-          update="ctrl.updateNote(noteId, note, isValid)"
-          remove="ctrl.deleteNote(noteId)">
+          update="notesCtrl.updateNote(noteId, note, isValid)"
+          remove="notesCtrl.deleteNote(noteId)">
       </div>
     </div>
   </div>

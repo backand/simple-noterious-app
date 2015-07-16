@@ -131,6 +131,10 @@
                     facebook: {name: 'facebook', label: 'Facebook', url: 'www.facebook.com', css: 'facebook', id: 3}
                 };
 
+                self.getSocialProviders = function () {
+                    return providers;
+                };
+
                 function getSocialUrl(providerName, isSignup) {
                     var provider = providers[providerName];
                     var action = isSignup ? 'up' : 'in';
@@ -178,8 +182,12 @@
                     }
                 }
 
-                self.signin = function(username, password) {
+                self.signin = function(username, password, appName) {
                     self.loginPromise = $q.defer();
+
+                    if (appName) {
+                        self.setAppName(appName);
+                    }
 
                     var userData = {
                         grant_type: 'password',
@@ -286,7 +294,12 @@
                     )
                 };
 
-                self.requestResetPassword = function(email) {
+                self.requestResetPassword = function(email, appName) {
+
+                    if (appName) {
+                        self.setAppName(appName);
+                    }
+
                     return http({
                             method: 'POST',
                             url: config.apiUrl + '/1/user/requestResetPassword',

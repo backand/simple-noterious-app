@@ -5,31 +5,31 @@
       <div class="create board">
         <div class="caption">
           <form
-              name="ctrl.createForm"
+              name="boardsCtrl.createForm"
               class="create-form"
               role="form"
-              ng-submit="ctrl.createBoard(ctrl.newBoard, ctrl.createForm.$valid)"
+              ng-submit="boardsCtrl.createBoard(boardsCtrl.newBoard, boardsCtrl.createForm.$valid)"
               novalidate>
             <fieldset>
               <div>
                 <input
                     type="text"
                     class="medium"
-                    ng-model="ctrl.newBoard.title"
+                    ng-model="boardsCtrl.newBoard.title"
                     placeholder="Board Title"
                     required>
               </div>
               <div>
                 <input
                     type="text"
-                    ng-model="ctrl.newBoard.description"
+                    ng-model="boardsCtrl.newBoard.description"
                     placeholder="Board description"
                     required>
               </div>
               <div class="bottom x-small">
                 <input
                     type="checkbox"
-                    ng-model="ctrl.newBoard.isPublic">
+                    ng-model="boardsCtrl.newBoard.isPublic">
                 Board is Public
               </div>
               <button
@@ -46,10 +46,10 @@
     <!-- EXISTING BOARDS -->
     <div
         class="col-sm-4"
-        ng-repeat="(id, board) in ctrl.boards"
+        ng-repeat="(id, board) in boardsCtrl.boards"
         board="board"
         board-id="{{board.id}}"
-        remove="ctrl.deleteBoard(boardId)">
+        remove="boardsCtrl.deleteBoard(boardId)">
     </div>
   </div>
 </div>

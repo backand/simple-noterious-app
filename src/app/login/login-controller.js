@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('noterious')
-  .controller('LoginCtrl', function (UserModel, $state) {
+  .controller('LoginCtrl', function (UserModel, Backand, $state) {
     var login = this;
 
     login.loading = false;
@@ -63,11 +63,7 @@ angular.module('noterious')
       };
     };
 
-    login.providers = [
-      {name: 'github', label: 'Github', url: 'www.github.com', css: 'github', id:1},
-      {name: 'google', label: 'Google', url: 'www.google.com', css: 'google-plus', id:2},
-      {name: 'facebook', label: 'Facebook', url: 'www.facebook.com', css: 'facebook', id:3}
-    ];
+    login.providers = Backand.getSocialProviders();
 
     login.socialLogin = function (provider) {
       UserModel.socialLogin (provider.name, login.user.register)

@@ -66,7 +66,7 @@ angular.module('noterious.common')
 
     self.createDefaultMember = function(boardId){
       return $http.get(Backand.getApiUrl() + '/1/objects/action/boards/' + boardId + '?name=AddDefaultMember').then(extract);
-    }
+    };
 
     self.update = function (boardId, board) {
       return $http.put(getUrlForId(boardId), board).then(extract);
