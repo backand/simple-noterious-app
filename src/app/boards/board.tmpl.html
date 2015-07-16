@@ -3,36 +3,52 @@
     <button
         type="button"
         class="close"
-        ng-click="ctrl.deleteBoard(boardId)">
+        ng-click="boardCtrl.deleteBoard()">
       &times;
     </button>
     <div>
       <input
         type="text"
         class="medium"
-        ng-model="board.title"
-        ng-blur="ctrl.updateBoard(boardId, board)"
+        ng-model="boardCtrl.board.title"
+        ng-blur="boardCtrl.updateBoard()"
         placeholder="Board Title">
     </div>
     <div>
       <input type="text"
-         ng-model="board.description"
-         ng-blur="ctrl.updateBoard(boardId, board)"
+         ng-model="boardCtrl.board.description"
+         ng-blur="boardCtrl.updateBoard()"
          placeholder="Board description.">
     </div>
     <div class="bottom x-small">
       <input
         type="checkbox"
-        ng-model="board.isPublic"
-        ng-blur="ctrl.updateBoard(boardId, board)">
+        ng-model="boardCtrl.board.isPublic"
+        ng-blur="boardCtrl.updateBoard()">
       Board is Public
     </div>
+
+    <div
+      isteven-multi-select
+      input-model="boardCtrl.board.allMembers"
+      output-model="boardCtrl.board.members"
+      button-label="email"
+      item-label="email"
+      tick-property="isMember"
+      output-properties="email id users_boards_id"
+      max-labels="0"
+      max-height="200px"
+      on-item-click="boardCtrl.updateMember(data)"
+      helper-elements="filter"
+      >
+    </div>
+
     <a
       type="button"
       ui-sref="notes({boardId: boardId})"
       class="view arrow-bottom-right btn btn-default">
       <span class="glyphicon glyphicon-arrow-right"></span>
     </a>
-    <span ng-show="ctrl.loading" class="glyphicon glyphicon-refresh"></span>
+    <span ng-show="boardCtrl.loading" class="glyphicon glyphicon-refresh"></span>
   </div>
 </div>

@@ -5,7 +5,8 @@ angular.module('noterious', [
   'ngAnimate',
   'backand',
   'ngCookies',
-  'noterious.common'
+  'noterious.common',
+  'isteven-multi-select'
 ])
 .config(function ($stateProvider, $urlRouterProvider, $httpProvider, BackandProvider) {
   BackandProvider.manageDefaultHeaders();
