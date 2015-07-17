@@ -1,23 +1,20 @@
 # Noterious 
 
 
-Welcome to the Noterious app. It is built using AngularJS with Backand as the backend. If you would like to see it in action, visit http://noterio.backand.net; if you want to run it locally, read on!
+Welcome to the Noterious app. It is built using AngularJS with Backand as the backend. If you would like to see it in action, visit http://noterious.backand.net; if you want to run it locally, read on!
 
 ## Prerequisites
 Before you start, you will need:
 * [Git](http://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 * [Node.js and Node Package Manager (NPM)](https://nodejs.org/download/)
 
-## Setting up Backand
+## Getting started
 
 To start off, you will need to set up an account with Backand:
 * Navigate to [backand.com](https://www.backand.com/) and click `Sign Up`
 * Create an app (named whatever you want)
 * Click on your new app's URL
-* Continue with the following instructions:
-
-#### Build the model
-After app creation, paste the following JSON into the "Custom Model" text box on the "New Hosted Database" tab:
+* After app creation, in the "New Hosted Database" tab paste the following JSON into the "Custom Model" text box and click 'Next' :
 ```
 [
   {
@@ -116,22 +113,25 @@ After app creation, paste the following JSON into the "Custom Model" text box on
   }
 ]
 ```
+* Get the code:
+```
+git clone https://github.com/backand/simple-noterious-app.git
+cd simple-noterious-app/src
+```
 
-
-
-
-
-## Run the App
-
-You need to install all of your dependencies.
+* You need to install all of your dependencies.
 ```
 bower install
 ```
-And install and run the serve package so you can build the app.
+* Install and run the serve package so you can build the app.
 
 ```
 npm install -g serve
 serve src/
 ```
 
-Navigate to http://localhost:3000 and view the gloriousness that is Noterious!
+
+
+
+Navigate to [http://localhost:3000](http://localhost:3000) and view the gloriousness that is Noterious!
+
