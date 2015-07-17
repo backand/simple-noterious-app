@@ -1,11 +1,8 @@
 <div class="board-header">
-  <span
-      class="large"
-      ng-click="notesCtrl.goBack()">
-    {{notesCtrl.board.title}}
-  </span>
+
 </div>
 <div class="container">
+  <a class="large" href="" ng-click="notesCtrl.goBack()">{{notesCtrl.board.title}}</a>
   <div class="row">
     <div class="board-content">
       <!-- NEW NOTE -->
@@ -49,7 +46,7 @@
           class="col-sm-4"
           ng-repeat="(id, note) in notesCtrl.notes"
           note="note"
-          update="notesCtrl.updateNote(noteId, note, isValid)"
+          update="dotesCtrl.updateNote(noteId, note, isValid)"
           remove="notesCtrl.deleteNote(noteId)">
       </div>
     </div>

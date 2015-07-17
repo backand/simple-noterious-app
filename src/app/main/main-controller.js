@@ -2,13 +2,17 @@
  'use strict';
 
   angular.module('noterious')
-    .controller('MainCtrl', ['UserModel', MainCtrl]);
+    .controller('MainCtrl', ['UserModel','$state', MainCtrl]);
 
-  function MainCtrl (UserModel) {
-    var main = this;
-    main.currentColor = 'blue';
+  function MainCtrl (UserModel,$state) {
+    var self = this;
 
-    main.colors = [
+    self._init = function () {
+      self.currentColor = 'blue';
+      self.currentUserEmail = UserModel.getCurrentUser();
+    };
+
+    self.colors = [
       'blue',
       'green',
       'orange',
@@ -16,13 +20,19 @@
       'yellow'
     ];
 
-    main.setCurrentColor = function(color) {
-      main.currentColor = color;
+    self.setCurrentColor = function(color) {
+      self.currentColor = color;
     };
 
-    main.logout = function () {
-      UserModel.logout();
+    self.logout = function () {
+      UserModel.logout()
+        .then(function(){
+            self.currentUserEmail = '';
+            $state.go('login');
+        });
     };
+
+    self._init();
   }
 
 })();

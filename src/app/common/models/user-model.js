@@ -9,18 +9,19 @@
 
     var currentUser = null;
 
-    self.getCurrentUser = function () {
-      return currentUser;
+    self._init = function () {
+      currentUser = Backand.getUsername();
     };
 
-    self.setCurrentUser = function(user){
-      currentUser = user;
-    };
+    self.getCurrentUser = function(){
+      return currentUser;
+    }
 
     self.login = function (user) {
       return Backand.signin(user.email, user.password)
         .then(function (response) {
           self.error = '';
+          currentUser = Backand.getUsername();
         }, function (error) {
           self.error = error && error.error_description || 'Unknown error from server';
           console.log(self.error);
@@ -56,9 +57,10 @@
     };
 
     self.logout = function () {
-      Backand.signout();
-      $state.go('login');
+      return Backand.signout();
     };
+
+    self._init();
   }
 
 })();

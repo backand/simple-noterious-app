@@ -13,42 +13,8 @@
     <link rel="stylesheet" href="assets/css/animations.css">
     <link rel="stylesheet" href="assets/css/isteven-multi-select.css">
   </head>
-  <body ng-controller="MainCtrl as main" ng-class="{loading:loadingView}" class="bg-{{main.currentColor}}">
-    <div class="app-wrap">
-      <header class="navbar-clear nav-wrap" role="banner">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a ui-sref="boards" class="navbar-brand"><img src="assets/images/logo.png" alt="noterio.us"/></a>
-        </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse bg-{{main.currentColor}}">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a class="{{main.currentColor}}" href="http://angularjs.org/" target="_blank">AngularJS</a></li>
-            <li><a class="{{main.currentColor}}" href="http://backand.com/" target="_blank">Back&</a></li>
-            <li><a class="{{main.currentColor}}" href="https://github.com/simpulton/noterious" target="_blank">GitHub</a></li>
-            <li>
-              <button class="btn btn-link {{main.currentColor}}" ng-click="main.logout()">Logout</button>
-            </li>
-          </ul>
-        </div>
-      </header>
-
-      <div ui-view class="content"></div>
-
-      <div class="modal"></div>
-
-      <ul class="color-picker">
-        <li><div class="square blue" ng-click="main.setCurrentColor('blue')"></div></li>
-        <li><div class="square green" ng-click="main.setCurrentColor('green')"></div></li>
-        <li><div class="square orange" ng-click="main.setCurrentColor('orange')"></div></li>
-        <li><div class="square red" ng-click="main.setCurrentColor('red')"></div></li>
-        <li><div class="square yellow" ng-click="main.setCurrentColor('yellow')"></div></li>
-      </ul>
-    </div>
+  <body>
+  <ui-view></ui-view>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
