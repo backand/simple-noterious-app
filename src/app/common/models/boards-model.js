@@ -24,7 +24,9 @@
     }
 
     self.all = function () {
-      return $http.get(getUrl()).then(extractData);
+      return $http.get(getUrl())
+          .then(extractData)
+          .then(updateBoards);
     };
 
     self.getUsersBoards = function () {

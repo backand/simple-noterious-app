@@ -14,7 +14,8 @@ angular.module('noterious')
     };
 
     self.getBoards = function () {
-      BoardsModel.getUsersBoards();
+      //BoardsModel.getUsersBoards();
+      BoardsModel.all();
     };
 
     self.resetForm = function () {

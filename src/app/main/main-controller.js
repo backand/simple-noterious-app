@@ -9,7 +9,7 @@
 
     self._init = function () {
       self.currentColor = 'blue';
-      self.currentUserEmail = UserModel.getCurrentUser();
+      self.currentUserEmail = UserModel.getCurrentUser() || 'Guest';
     };
 
     self.colors = [
