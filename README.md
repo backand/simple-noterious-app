@@ -306,7 +306,7 @@ To restrict the access we will stop using the default Get of the object and crea
 
 Update the Angular code to include the new query:
 
-1.In 'app/boards/boards-controller.js' file under self.getBoards function start using the getUsersBoards() function instead of all() function
+1. In 'app/boards/boards-controller.js' file under self.getBoards function start using the getUsersBoards() function instead of all() function
 2. The result should be:
 
   ```javascript
