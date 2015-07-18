@@ -227,7 +227,7 @@ a.view:hover, a.view:focus {
 }
 
 .content .board {
-    min-height: 200px;
+    min-height: 220px;
     max-width: 290px;
     width: 100%;
     margin:20px auto;

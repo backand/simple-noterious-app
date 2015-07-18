@@ -26,7 +26,8 @@
     self.all = function () {
       return $http.get(getUrl())
           .then(extractData)
-          .then(updateBoards);
+          .then(updateBoards)
+          .then(addBoardMembers);
     };
 
     self.getUsersBoards = function () {
@@ -60,7 +61,7 @@
 
     self.getBoardMembers = function (boardId) {
       return $http.get(Backand.getApiUrl() +
-        '/1/query/data/GetBoardsMemebers',
+        '/1/query/data/GetBoardsMembers',
         {
           params: {
             parameters: {
@@ -84,7 +85,8 @@
       return $http.post(getUrl() + '?returnObject=true', board)
         .then(extractData)
         .then(createDefaultMember)
-        .then(self.getUsersBoards);
+        .then(updateBoards);
+        //.then(self.getUsersBoards);
     };
 
     function createDefaultMember (board) {

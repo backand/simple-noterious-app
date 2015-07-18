@@ -20,6 +20,9 @@
          ng-blur="boardCtrl.updateBoard()"
          placeholder="Board description.">
     </div>
+    <div>
+      <span>{{boardCtrl.board.dueDate | date:'M/d/yyyy' }}</span>
+    </div>
     <div class="bottom x-small">
       <input
         type="checkbox"
