@@ -170,13 +170,14 @@ For the current user to view a new board we will add a server side code that add
 
 //Get the member id of the current user 
 var members = $http({method:"GET",url:CONSTS.apiUrl + "/1/objects/users?filter=" + 
-"[{\"fieldName\": \"email\",\"operator\": \"equals\",\"value\": \"" + userProfile.username + "\"}]",
-headers: {"Authorization":userProfile.token}});
+"[{\"fieldName\": \"email\",\"operator\": \"equals\",\"value\": \"" + 
+userProfile.username + "\"}]", headers: {"Authorization":userProfile.token}});
 
 // Add Default member by POST to users_boards
 var ubObj = {member: members.data[0].id, board: dbRow.id};
 console.log(ubObj); //debug
-$http({method:"POST",url:CONSTS.apiUrl + "/1/objects/users_boards", data:ubObj, headers: {"Authorization":userProfile.token}});
+$http({method:"POST",url:CONSTS.apiUrl + "/1/objects/users_boards", data:ubObj, 
+headers: {"Authorization":userProfile.token}});
   
 ```
 
@@ -268,10 +269,10 @@ Update the Angular code to include the new query:
 
 self.all = function () {
   return $http.get(getUrl())
-      .then(extractData)
-      .then(updateBoards)
-      .then(addBoardMembers);
-    };
+    .then(extractData)
+    .then(updateBoards)
+    .then(addBoardMembers);
+};
 ```
 3. Go back to the browser 'http://localhost:3000/#/' and refresh. You should see a drop down selected users with 1 user selected.
 4. Let's add more users in order to test this for real:
@@ -310,7 +311,7 @@ LEFT JOIN users_boards ON boards.id = users_boards.board
 LEFT JOIN users ON users_boards.member = users.id
 WHERE users.email = '{{sys::username}}' OR isPublic={{isPublic}}
    
-
+```
 7. Save
 8. Test the query by entering the 1 in the isPublic and click Test Query.
 9. In the test results you should see all the boards you are member in or they're public.
@@ -326,6 +327,7 @@ self.getBoards = function () {
   BoardsModel.getUsersBoards();
   //BoardsModel.all();
 };
+
 ```
 3. Go back to the browser 'http://localhost:3000/#/' and refresh.
 
@@ -346,7 +348,8 @@ The trigger will get the existing and the new title and insert new item to histo
 
 ```
 
-INSERT INTO history (board, oldData, newData) VALUES(%1,'%2','%3');
+INSERT INTO history (board, oldData, newData) 
+       VALUES(%1,'%2','%3');
 ```
 
 7. To replace the place holders %1, %2, %3 by real values click on the anchor icon: 
@@ -358,9 +361,9 @@ INSERT INTO history (board, oldData, newData) VALUES(%1,'%2','%3');
 
 ```
 
-INSERT INTO history (board, oldData, newData) VALUES({{id}},'{{boards.title}}','{{title}}');
+INSERT INTO history (board, oldData, newData) 
+       VALUES({{id}},'{{boards.title}}','{{title}}');
 ```
-
 9. Save
 10. Test the query by providing new title
 11. To view the actual data open the Data tab under the users_boards object.
