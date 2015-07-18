@@ -166,20 +166,18 @@ For the current user to view a new board we will add a server side code that add
 5. Type: Server Side JavaScript Code
 6. JavaScript Code: Past this code under the '// write your code here' before the return {}
 
-```javascript
-
-//Get the member id of the current user 
-var members = $http({method:"GET",url:CONSTS.apiUrl + "/1/objects/users?filter=" + 
-"[{\"fieldName\": \"email\",\"operator\": \"equals\",\"value\": \"" + 
-userProfile.username + "\"}]", headers: {"Authorization":userProfile.token}});
-
-// Add Default member by POST to users_boards
-var ubObj = {member: members.data[0].id, board: dbRow.id};
-console.log(ubObj); //debug
-$http({method:"POST",url:CONSTS.apiUrl + "/1/objects/users_boards", data:ubObj, 
-headers: {"Authorization":userProfile.token}});
+  ```javascript
+  //Get the member id of the current user 
+  var members = $http({method:"GET",url:CONSTS.apiUrl + "/1/objects/users?filter=" + 
+  "[{\"fieldName\": \"email\",\"operator\": \"equals\",\"value\": \"" + 
+  userProfile.username + "\"}]", headers: {"Authorization":userProfile.token}});
   
-```
+  // Add Default member by POST to users_boards
+  var ubObj = {member: members.data[0].id, board: dbRow.id};
+  console.log(ubObj); //debug
+  $http({method:"POST",url:CONSTS.apiUrl + "/1/objects/users_boards", data:ubObj, 
+  headers: {"Authorization":userProfile.token}});
+  ```
 
 7. Save
 8. Test the action by clicking on 'Test Action'. You should see response '200 - OK' and in the Debug Console: ``` [{"Key":"member","Value":1},{"Key":"board","Value":null}] ```
@@ -200,15 +198,13 @@ We would like to and a due date that is calculated in the sever (in our example 
 5. Type: Server Side JavaScript Code
 6. JavaScript Code: Past this code under the '// write your code here' before the return {}
 
-```javascript
-            
-var today = new Date();
-var newDate = new Date();
-newDate.setDate(today.getDate() + 7);
-userInput.dueDate = newDate;
-console.log(userInput);
-    
-```
+  ```javascript         
+  var today = new Date();
+  var newDate = new Date();
+  newDate.setDate(today.getDate() + 7);
+  userInput.dueDate = newDate;
+  console.log(userInput); 
+  ```
 
 7. Save
 8. Test the action by clicking on 'Test Action'. You should see response '200 - OK'
@@ -246,15 +242,13 @@ To enable members selection we would use Backand query, with the following steps
 3. Input Parameters: board
 4. Query: The query select all the users and join with users_boards to check who is member or not
 
-```
-  
-SELECT DISTINCT users.*,
-      users_boards.id as users_boards_id, 
-      NOT ISNULL(users_boards.board) as isMember
-  FROM users LEFT JOIN users_boards ON users.id = users_boards.member 
-      AND users_boards.board = {{board}} 
-    
-```
+  ```
+  SELECT DISTINCT users.*,
+        users_boards.id as users_boards_id, 
+        NOT ISNULL(users_boards.board) as isMember
+    FROM users LEFT JOIN users_boards ON users.id = users_boards.member 
+        AND users_boards.board = {{board}}   
+  ```
 
 5. Save
 6. Test the query by entering the board id and click Test Query. (You can get board id from the Data tab under the boards object).
@@ -264,16 +258,15 @@ Update the Angular code to include the new query:
 
 1. In 'app/common/models/boards-model.js' file under the self.all function uncomment the call to addBoardMembers.
 2. The result should be:
-
-```javascript
-
-self.all = function () {
-  return $http.get(getUrl())
-    .then(extractData)
-    .then(updateBoards)
-    .then(addBoardMembers);
-};
-```
+  
+  ```javascript
+  self.all = function () {
+    return $http.get(getUrl())
+      .then(extractData)
+      .then(updateBoards)
+      .then(addBoardMembers);
+  };
+  ```
 3. Go back to the browser 'http://localhost:3000/#/' and refresh. You should see a drop down selected users with 1 user selected.
 4. Let's add more users in order to test this for real:
   * Open the Data tab under the users object
@@ -290,28 +283,23 @@ To restrict the access we will stop using the default Get of the object and crea
 3. Input Parameters: isPublic
 4. Query: The query select all the users and join with users_boards to check who is member or not
 
-```
-     
-SELECT DISTINCT boards.* from boards
-LEFT JOIN users_boards ON boards.id = users_boards.board
-LEFT JOIN users ON users_boards.member = users.id
-WHERE users.email = '%1' OR isPublic=%2
-    
-```
-
+  ```  
+  SELECT DISTINCT boards.* from boards
+  LEFT JOIN users_boards ON boards.id = users_boards.board
+  LEFT JOIN users ON users_boards.member = users.id
+  WHERE users.email = '%1' OR isPublic=%2
+  ```
 5. To replace the place holders %1, %2, %3 by real values click on the anchor icon:
   * Replace %1 with the current user username (email) by selecting 'username' at the top
   * Replace %2 with with the input parameter value (email) by selecting 'isPublic' under 'Parameters'  
 6. The end result of the query:
 
-```
-     
-SELECT DISTINCT boards.* from boards
-LEFT JOIN users_boards ON boards.id = users_boards.board
-LEFT JOIN users ON users_boards.member = users.id
-WHERE users.email = '{{sys::username}}' OR isPublic={{isPublic}}
-   
-```
+  ```
+  SELECT DISTINCT boards.* from boards
+  LEFT JOIN users_boards ON boards.id = users_boards.board
+  LEFT JOIN users ON users_boards.member = users.id
+  WHERE users.email = '{{sys::username}}' OR isPublic={{isPublic}}
+  ```
 7. Save
 8. Test the query by entering the 1 in the isPublic and click Test Query.
 9. In the test results you should see all the boards you are member in or they're public.
@@ -321,14 +309,12 @@ Update the Angular code to include the new query:
 1.In 'app/boards/boards-controller.js' file under self.getBoards function start using the getUsersBoards() function instead of all() function
 2. The result should be:
 
-```javascript
-
-self.getBoards = function () {
-  BoardsModel.getUsersBoards();
-  //BoardsModel.all();
-};
-
-```
+  ```javascript
+  self.getBoards = function () {
+    BoardsModel.getUsersBoards();
+    //BoardsModel.all();
+  };
+  ```
 3. Go back to the browser 'http://localhost:3000/#/' and refresh.
 
 #### Keep track of changes
@@ -346,11 +332,10 @@ The trigger will get the existing and the new title and insert new item to histo
 5. Type: Transactional sql script
 6. Sql Script:
 
-```
-
-INSERT INTO history (board, oldData, newData) 
-       VALUES(%1,'%2','%3');
-```
+  ```
+  INSERT INTO history (board, oldData, newData) 
+         VALUES(%1,'%2','%3');
+  ```
 
 7. To replace the place holders %1, %2, %3 by real values click on the anchor icon: 
   * Replace %1 with the current board id by selecting 'id' under 'userInput'
@@ -359,11 +344,10 @@ INSERT INTO history (board, oldData, newData)
 
 8. The end result Sql script should be like this:
 
-```
-
-INSERT INTO history (board, oldData, newData) 
-       VALUES({{id}},'{{boards.title}}','{{title}}');
-```
+  ```
+  INSERT INTO history (board, oldData, newData) 
+         VALUES({{id}},'{{boards.title}}','{{title}}');
+  ```
 9. Save
 10. Test the query by providing new title
 11. To view the actual data open the Data tab under the users_boards object.
@@ -378,13 +362,12 @@ In order to prevent from Users to get access directly to the boards object we ne
   * In 'app/common/models/boards-model.js' in createDefaultMember function change the board.id to board.__metadata.id
   * The end result of the code:
 
-```javascript
-
-function createDefaultMember (board) {
-  return $http.get(Backand.getApiUrl() + '/1/objects/action/boards/' + board.id + '?name=AddDefaultMember')
-    .then(extractData);
-}
-```
+  ```javascript
+  function createDefaultMember (board) {
+    return $http.get(Backand.getApiUrl() + '/1/objects/action/boards/' + board.id + '?name=AddDefaultMember')
+      .then(extractData);
+  }
+  ```
 
 ## Manage users
 
