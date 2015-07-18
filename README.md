@@ -168,15 +168,15 @@ For the current user to view a new board we will add a server side code that add
 
 ```javascript
 
-    //Get the member id of the current user 
-    var members = $http({method:"GET",url:CONSTS.apiUrl + "/1/objects/users?filter=" + 
-    "[{\"fieldName\": \"email\",\"operator\": \"equals\",\"value\": \"" + userProfile.username + "\"}]",
-    headers: {"Authorization":userProfile.token}});
-    
-    // Add Default member by POST to users_boards
-    var ubObj = {member: members.data[0].id, board: dbRow.id};
-    console.log(ubObj); //debug
-    $http({method:"POST",url:CONSTS.apiUrl + "/1/objects/users_boards", data:ubObj, headers: {"Authorization":userProfile.token}});
+//Get the member id of the current user 
+var members = $http({method:"GET",url:CONSTS.apiUrl + "/1/objects/users?filter=" + 
+"[{\"fieldName\": \"email\",\"operator\": \"equals\",\"value\": \"" + userProfile.username + "\"}]",
+headers: {"Authorization":userProfile.token}});
+
+// Add Default member by POST to users_boards
+var ubObj = {member: members.data[0].id, board: dbRow.id};
+console.log(ubObj); //debug
+$http({method:"POST",url:CONSTS.apiUrl + "/1/objects/users_boards", data:ubObj, headers: {"Authorization":userProfile.token}});
   
 ```
 
@@ -201,11 +201,11 @@ We would like to and a due date that is calculated in the sever (in our example 
 
 ```javascript
             
-    var today = new Date();
-    var newDate = new Date();
-    newDate.setDate(today.getDate() + 7);
-    userInput.dueDate = newDate;
-    console.log(userInput);
+var today = new Date();
+var newDate = new Date();
+newDate.setDate(today.getDate() + 7);
+userInput.dueDate = newDate;
+console.log(userInput);
     
 ```
 
@@ -247,11 +247,11 @@ To enable members selection we would use Backand query, with the following steps
 
 ```
   
-  SELECT DISTINCT users.*,
-        users_boards.id as users_boards_id, 
-        NOT ISNULL(users_boards.board) as isMember
-    FROM users LEFT JOIN users_boards ON users.id = users_boards.member 
-        AND users_boards.board = {{board}} 
+SELECT DISTINCT users.*,
+      users_boards.id as users_boards_id, 
+      NOT ISNULL(users_boards.board) as isMember
+  FROM users LEFT JOIN users_boards ON users.id = users_boards.member 
+      AND users_boards.board = {{board}} 
     
 ```
 
@@ -266,11 +266,11 @@ Update the Angular code to include the new query:
 
 ```javascript
 
-    self.all = function () {
-      return $http.get(getUrl())
-          .then(extractData)
-          .then(updateBoards)
-          .then(addBoardMembers);
+self.all = function () {
+  return $http.get(getUrl())
+      .then(extractData)
+      .then(updateBoards)
+      .then(addBoardMembers);
     };
 ```
 3. Go back to the browser 'http://localhost:3000/#/' and refresh. You should see a drop down selected users with 1 user selected.
@@ -291,10 +291,10 @@ To restrict the access we will stop using the default Get of the object and crea
 
 ```
      
-  SELECT DISTINCT boards.* from boards
-  LEFT JOIN users_boards ON boards.id = users_boards.board
-  LEFT JOIN users ON users_boards.member = users.id
-  WHERE users.email = '%1' OR isPublic=%2
+SELECT DISTINCT boards.* from boards
+LEFT JOIN users_boards ON boards.id = users_boards.board
+LEFT JOIN users ON users_boards.member = users.id
+WHERE users.email = '%1' OR isPublic=%2
     
 ```
 
@@ -305,10 +305,10 @@ To restrict the access we will stop using the default Get of the object and crea
 
 ```
      
-  SELECT DISTINCT boards.* from boards
-  LEFT JOIN users_boards ON boards.id = users_boards.board
-  LEFT JOIN users ON users_boards.member = users.id
-  WHERE users.email = '{{sys::username}}' OR isPublic={{isPublic}}
+SELECT DISTINCT boards.* from boards
+LEFT JOIN users_boards ON boards.id = users_boards.board
+LEFT JOIN users ON users_boards.member = users.id
+WHERE users.email = '{{sys::username}}' OR isPublic={{isPublic}}
    
 
 7. Save
@@ -322,10 +322,10 @@ Update the Angular code to include the new query:
 
 ```javascript
 
-    self.getBoards = function () {
-      BoardsModel.getUsersBoards();
-      //BoardsModel.all();
-    };
+self.getBoards = function () {
+  BoardsModel.getUsersBoards();
+  //BoardsModel.all();
+};
 ```
 3. Go back to the browser 'http://localhost:3000/#/' and refresh.
 
@@ -346,7 +346,7 @@ The trigger will get the existing and the new title and insert new item to histo
 
 ```
 
-  INSERT INTO history (board, oldData, newData) VALUES(%1,'%2','%3');
+INSERT INTO history (board, oldData, newData) VALUES(%1,'%2','%3');
 ```
 
 7. To replace the place holders %1, %2, %3 by real values click on the anchor icon: 
@@ -358,7 +358,7 @@ The trigger will get the existing and the new title and insert new item to histo
 
 ```
 
-  INSERT INTO history (board, oldData, newData) VALUES({{id}},'{{boards.title}}','{{title}}');
+INSERT INTO history (board, oldData, newData) VALUES({{id}},'{{boards.title}}','{{title}}');
 ```
 
 9. Save
@@ -377,13 +377,35 @@ In order to prevent from Users to get access directly to the boards object we ne
 
 ```javascript
 
-    function createDefaultMember (board) {
-      return $http.get(Backand.getApiUrl() + '/1/objects/action/boards/' + board.id + '?name=AddDefaultMember')
-        .then(extractData);
-    }
+function createDefaultMember (board) {
+  return $http.get(Backand.getApiUrl() + '/1/objects/action/boards/' + board.id + '?name=AddDefaultMember')
+    .then(extractData);
+}
 ```
 
-## Manage the users
+## Manage users
+
+#### Sign-up
+
+In order to let others sign-up to your app, you would need to make sure the sign-up token is valid in the main app config section
+* In Backand dashboard under Security & auth --> Configuration copy the API Sign-up Token
+* In the 'app/Noterious.js' file in the .config section make sure you have this line BackandProvider.setSignUpToken('Your-SignUp-Token');
+* Replace the token you copy with the 'Your-SignUp-Token'
+ 
+- To test it in the demo, click the logout option at the upper right corner, and do sign in with 'new User?' checkbox is marked.
+
+In the code:
+* To make the sign-up in the Angular code need to call **Backand.signup**(firstName, lastName, email, password, confirmPassword) - see 'app/common/models/user-model.js' file.
+* For social login just call **Backand.socialSignUp**(provider). At the moment the options are: 'google', 'github', 'facebook' 
+
+#### Public access with Anonymous
+
+You can configure Backand to allow anyone without registration or username/password to access the data.
+* To enable public access enable 'Anonymous Access' under Security & auth --> Configuration page.
+* Select the role of the anonymous user gets, this will determent what the user can do and view. We recommend no more then read-only access but you can select any role.
+* In this example we selected 'Read-Only' role.
+* Copy the 'Anonymous Token' and make sure it match the one in the .config section in 'app/Noterious.js' file.
+
 
 ## Upload to AWS S3
 
