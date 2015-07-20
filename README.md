@@ -409,26 +409,35 @@ Once this is done, only users with the Admin role will be able to read the data.
 
 ## Manage users
 
+Once the main functionality is completed, we need to configure the users portion of our application. Below we'll look at two ways to manage use of the app: via user sign-up, and via public anonymous access.
+
 #### Sign-up
 
-In order to let others sign-up to your app, you would need to make sure the sign-up token is valid in the main app config section
-* In Backand dashboard under Security & auth --> Configuration copy the API Sign-up Token
-* In the 'app/Noterious.js' file in the .config section make sure you have this line BackandProvider.setSignUpToken('Your-SignUp-Token');
-* Replace the token you copy with the 'Your-SignUp-Token'
- 
-- To test it in the demo, click the logout option at the upper right corner, and do sign in with 'new User?' checkbox is marked.
+In the previous steps, we updated our API Sign-Up token in the angular code to match the value provided in our application's Backand dashboard. First, let's verify that that token is still valid.
 
-In the code:
-* To make the sign-up in the Angular code need to call **Backand.signup**(firstName, lastName, email, password, confirmPassword) - see 'app/common/models/user-model.js' file.
-* For social login just call **Backand.socialSignUp**(provider). At the moment the options are: 'google', 'github', 'facebook' 
+1. In Backand dashboard under "Security & auth --> Configuration," copy the API Sign-up Token provided.
+2. Open your local copy of Noterious.js (located in the app's 'src' folder under 'app/Noterious.js').
+3. In the .config section of Noterious.js, make sure you have this line: BackandProvider.setSignUpToken('##########');
+4. Ensure the value provided in this function matches the value you recorded in step 1.
+
+Now, in order to enable user registration, we need to make our app public. To do this:
+
+1. Open the application's Backand dashboard.
+2. Navigate to 'Security & Auth --> Configuration'
+3. Click the toggle next to "Public App" to enable any user to register for your application
+
+Once this is done, users can now register for your application through the login page. To test this in your local application, log out of the app by clicking on the "logout" option in the upper right corner. Next, sign in to your application with a new email address and password, making sure to check the "New user?" checkbox.
+
+The code to manage user registration has already been written for you! You can see how this is done by examining the code in the following locations:
+* User registration is handled in file 'src/app/common/models/user-model.js' - search for the call to **Backand.signup**(firstName, lastName, email, password, confirmPassword) in function `self.register`
+* Social networking login functionality is handled in the same file ('src/app/common/models/user-model.js') with the function **Backand.socialSignUp**(provider). At the moment the options are: 'google', 'github', 'facebook'. This can be found in the function `self.socialLogin
 
 #### Public access with Anonymous
 
-You can configure Backand to allow anyone without registration or username/password to access the data.
-* To enable public access enable 'Anonymous Access' under Security & auth --> Configuration page.
-* Select the role of the anonymous user gets, this will determent what the user can do and view. We recommend no more then read-only access but you can select any role.
-* In this example we selected 'Read-Only' role.
-* Copy the 'Anonymous Token' and make sure it match the one in the .config section in 'app/Noterious.js' file.
-
+In addition to registered users, you can also configure your Backand application to allow anyone to access your site - without any need to register or log in. We did this during the initial application setup, so we should only need to verify that this is already done. To enable anonymous acess:
+* Open the 'Security & Auth --> Configuration' section of the Backand dashboard.
+* Enable anonymous access by clicking the toggle next to "Anonymous Access"
+* Select the role for anonymous users by picking a role from the "Anonymous users assigned role" dropdown (in the example above we selected 'ReadOnly') access for anonymous users. This setting determines what anonymous users can see and do in your application. We recommend restricting anonymous users to a read-only level role, but you can of course select any role you desire.
+* Copy the 'Anonymous Token' and make sure it matches the value recorded in the .config section of the 'app/Noterious.js' file we worked with in the previous step.
 
 ## Upload to AWS S3
