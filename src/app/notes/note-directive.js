@@ -9,7 +9,8 @@
       scope: {
         note:'=',
         remove:'&',
-        update: '&'
+        update: '&',
+        fileChanged: '&'
       },
       templateUrl: 'app/notes/note.tmpl.html',
       controller: NoteController,
@@ -31,6 +32,10 @@
 
     self.deleteNote = function () {
       self.remove({noteId: self.note.id});
+    };
+
+    self.updateNoteImage = function (elem) {
+      self.fileChanged({element: elem, note: self.note});
     };
   }
 

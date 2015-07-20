@@ -47,7 +47,8 @@
           ng-repeat="(id, note) in notesCtrl.notes"
           note="note"
           update="dotesCtrl.updateNote(noteId, note, isValid)"
-          remove="notesCtrl.deleteNote(noteId)">
+          remove="notesCtrl.deleteNote(noteId)"
+          fileChanged="notesCtrl.imageChanged(element, note)">
       </div>
     </div>
   </div>

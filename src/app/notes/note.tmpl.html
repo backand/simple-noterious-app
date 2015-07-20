@@ -21,6 +21,14 @@
           placeholder="Note content">
       </textarea>
     </div>
+    <div>
+        <input ng-model="noteCtrl.note.image"
+               onchange="console.log(angular.element(this).scope().noteCtrl);angular.element(this).scope().noteCtrl.updateNoteImage(this)"
+                 type="file" accept="*/*" />
+
+        <button ng-onclick="noteCtrl.file_changed(this, noteCtrl.note)">Upload</button>
+        <img ng-model="noteCtrl.note.image">
+    </div>
     <span ng-show="noteCtrl.loading" class="glyphicon glyphicon-refresh"></span>
   </div>
 </div>
