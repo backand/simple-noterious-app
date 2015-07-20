@@ -384,7 +384,7 @@ We already created the "history" object when we first created the application, b
 
 Now we can test our query directly in our local app instance! Open your local app ([http://localhost:3000/](http://localhost:3000/)) and change the name of one of your note boards. Now, open the Backand dashboard for your app and open the 'history' object. Under the 'data' tab you should see a new row containing a record of the change you just made.
 
-#### Update the security
+#### Update user access
 
 We have almost fully secured our application. At this point, any user can still create a board and will have access to the full board object. However, this is not always desirable. Below we'll look at an alternative way of using the `boards` object that is more secure, but still allows users to create and modify their own boards. To further restrict access to the `boards` object:
 
