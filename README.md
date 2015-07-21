@@ -471,6 +471,7 @@ Upload the files required Angular code to get the binary content of the file and
 
     ```
 
-  5. To upload to tour AWS S3, you need to create an account and replace the "key", "secret" and "bucket". In this example you can use Backand free storage.  
-  6. Save
-  7. To test it, add new note (under any board) and upload new image.
+5. To upload to tour AWS S3, you need to create an account and replace the "key", "secret" and "bucket". In this example you can use Backand free storage.  
+6. Save
+7. To test it, add new note (under any board) and upload new image.
+
