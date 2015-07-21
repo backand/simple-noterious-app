@@ -137,10 +137,10 @@ Before running the app, we need to change a few items in the app's code. Open th
   * Replace **'Your-App-Name'** with the new app name you chose when creating your Backand account
   * Replace **'Your-SignUp-Token'** with the SignUp token for your Backand application. This is found in the Backand dashboard under "Security & auth --> Configuration".
   * Replace **'Your-Anonymous-Token'** with your application's Anonymous token:
-   ** In Backand dashboard, under "Security & auth --> Configuration," enable Anonymous Access by clicking on the toggle on the right side of the page.
-   ** Set the Anonymous users assigned role to 'ReadOnly' in the provided drop down box.
-   ** Copy the Anonymous Token from the text box in the Anonymous access section.
-   ** Replace **Your-Anonymous-Token** with the value copied from the Backand dashboard.
+    1. In Backand dashboard, under "Security & auth --> Configuration," enable Anonymous Access by clicking on the toggle on the right side of the page.
+    2. Set the Anonymous users assigned role to 'ReadOnly' in the provided drop down box.
+    3. Copy the Anonymous Token from the text box in the Anonymous access section.
+    4. Replace **Your-Anonymous-Token** with the value copied from the Backand dashboard.
   
 
 Now we're ready to run the app! In your terminal window, simply type:
@@ -384,27 +384,22 @@ We already created the "history" object when we first created the application, b
 
 Now we can test our query directly in our local app instance! Open your local app ([http://localhost:3000/](http://localhost:3000/)) and change the name of one of your note boards. Now, open the Backand dashboard for your app and open the 'history' object. Under the 'data' tab you should see a new row containing a record of the change you just made.
 
-#### Update user access
+#### Restrict access to boards object
 
 We have almost fully secured our application. At this point, any user can still create a board and will have access to the full board object. However, this is not always desirable. Below we'll look at an alternative way of using the `boards` object that is more secure, but still allows users to create and modify their own boards. To further restrict access to the `boards` object:
 
 1. Open the `boards` object from the `Objects` menu.
 2. Open the Seurity tab.
-3. Click on the "OVERRIDE" toggle
-4. Uncheck the Read permission for the User and Read-only roles. 
+3. In the 'Pre-defined Filter' section we can add more restrictions that will be part of query Backand run on the database. Because the Pre-defined Filter is done in the server side it can't be overwrite which make it most secure.
+4. Add SQL to make sure we bring the boards that user is member in or public. The code is similar to the 'GetBoardsBasedOnCurrentUser' query (It also possible not to use the query but just the Pre-defined filter).
+5. The SQL should look like the following:
 
-Once this is done, only users with the Admin role will be able to read the data. This poses a problem for users trying to create new boards, as they can't obtain the new board's ID when executing the "AddDefaultMember" action. To get around this, we make use of the `metadata` property. Every object in Backand has a `metadata` field that stores the primary ID of the object in question. As we can't read board.id directly, we'll need to modify our angular code to go directly to the board's metadata property by doing the following:
-
-1. Open the file 'app/common/models/boards-model.js'
-2. Scroll down to the createDefaultMember function
-3. Change `board.id` in the `$http.get()` call to `board.__metadata.id`. The code should look like the following:
-
-  ```javascript
-  function createDefaultMember (board) {
-    return $http.get(Backand.getApiUrl() + '/1/objects/action/boards/' + board.__metadata.id + '?name=AddDefaultMember')
-      .then(extractData);
-  }
   ```
+  EXISTS (select users_boards.id from users_boards
+    LEFT JOIN users ON users_boards.member = users.id
+  WHERE users_boards.board = boards.id AND (users.email = '{{sys::username}}' OR isPublic=1))
+  ```
+6. To test it, you can can change back the function 'self.getBoards' in 'app/boards/boards-controller.js' to use BoardsModel.all() and see it returns only the correct boards.
 
 
 ## Manage users
@@ -441,3 +436,41 @@ In addition to registered users, you can also configure your Backand application
 * Copy the 'Anonymous Token' and make sure it matches the value recorded in the .config section of the 'app/Noterious.js' file we worked with in the previous step.
 
 ## Upload to AWS S3
+
+Using Backand Actions you can integrate with any REST API service, either by calling directly from the Action using HTTP request or by building your own node.js code and call it.
+In Backand we already created pre-defined server side code that you can use including Upload to AWS S3.
+ 
+Upload the files required Angular code to get the binary content of the file and Action to call to upload REST API.
+
+1. Open the Action tab for the notes object (which can be found under the "Objects" menu in the Backand dashboard.)
+2. Click "+New Action" and enter the following details in the fields provided:
+  1. Name: upload2s3
+  2. Event Trigger: 'On Demand - Execute via REST API'
+  3. Type: Server Side JavaScript Code
+  4. JavaScript Code: Past this code under the `// write your code here` comment, and replace `return {}` command:
+  
+  
+    ```javascript
+
+    var data = 
+		{
+            "key" : "AKIAIJX26SY3COIWV4FQ", // enter your aws key
+            "secret" : "ogun3pSOyw8FtP5i17s2STBPO9jQ8cs+lnpxwg82", // enter your aws secret key
+
+            // this should be sent in post body
+            "filename" : parameters.filename, 
+            "filedata" : parameters.filedata,         
+
+            "region" : "US Standard",
+        	"bucket" : "backand-free-upload"
+        	
+		}
+    var response = $http({method:"PUT",url:CONSTS.apiUrl + "/1/file/s3" , data: data, headers: {"Authorization":userProfile.token}});
+
+	return response;
+
+    ```
+
+  5. To upload to tour AWS S3, you need to create an account and replace the "key", "secret" and "bucket". In this example you can use Backand free storage.  
+  6. Save
+  7. To test it, add new note (under any board) and upload new image.
