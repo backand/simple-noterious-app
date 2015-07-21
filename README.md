@@ -189,8 +189,10 @@ Boards in the demo app can be set to either be public or to be restricted to spe
 
   5. Save
 3. Test the action by clicking on 'Test Action' on the right side of the web page. You should see response '200 - OK' and the Debug Console should contain `[{"Key":"member","Value":1},{"Key":"board","Value":null}]`
+
 (**NOTE:** let's review the existing code:
   In the file `app/common/models/boards-model.js`, the `create` function, after a successful $http.post, calls the `createDefaultMember` function to perform a `$http.get` call to the 'AddDefaultMember' action with the specified board id. 
+  
   The control flow for this code segment is:
   ``` create (Angular function) --> createDefaultMember (Angular function) --> AddDefaultMember (Backand Action) ```)
   
