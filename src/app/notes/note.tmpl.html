@@ -1,26 +1,34 @@
 <div class="edit note">
-  <div class="caption">
-    <button
-        type="button"
-        class="close"
-        ng-click="noteCtrl.deleteNote()">
-      &times;
-    </button>
-    <div>
-      <input
-          type="text"
-          class="medium"
-          ng-model="noteCtrl.note.title"
-          ng-blur="noteCtrl.updateNote()"
-          placeholder="Note Title">
+    <div class="caption">
+        <button
+            type="button"
+            class="close"
+            ng-click="noteCtrl.deleteNote()">
+            &times;
+        </button>
+        <div>
+            <input
+                type="text"
+                class="medium"
+                ng-model="noteCtrl.note.title"
+                ng-blur="noteCtrl.updateNote()"
+                placeholder="Note Title"/>
+        </div>
+        <div>
+          <textarea
+              ng-model="noteCtrl.note.content"
+              ng-blur="noteCtrl.updateNote()"
+              placeholder="Note content">
+          </textarea>
+        </div>
+        <br/>
+
+        <div>
+            <img ng-src="{{ noteCtrl.note.image }}" style="max-width:250px;" />
+            <input
+                onchange="angular.element(this).scope().noteCtrl.imageChanged(this)"
+                type="file" accept="*/*" style="width: 83px;"/>
+        </div>
+        <span ng-show="noteCtrl.loading" class="glyphicon glyphicon-refresh"></span>
     </div>
-    <div>
-      <textarea
-          ng-model="noteCtrl.note.content"
-          ng-blur="noteCtrl.updateNote()"
-          placeholder="Note content">
-      </textarea>
-    </div>
-    <span ng-show="noteCtrl.loading" class="glyphicon glyphicon-refresh"></span>
-  </div>
 </div>

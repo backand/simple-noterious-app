@@ -7,6 +7,25 @@ body {
     min-height: 100%;
 }
 
+.bg-purple {
+    background: url(../../assets/images/bg.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.app-wrap {
+    min-height: 100%;
+    padding: 10px;
+}
+.nav-wrap {
+    height:65px;
+}
+
+.nav.navbar-nav.navbar-right li a:focus {
+    outline: 5px auto -webkit-focus-ring-color;
+}
 
 .bg-blue {
     background: url(../../assets/images/bg-blue.jpg) no-repeat center center fixed;
@@ -49,14 +68,6 @@ body {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-}
-.app-wrap {
-    border: 10px solid #f5ead9;
-    min-height: 100%;
-    padding: 10px;
-}
-.nav-wrap {
-    height:65px;
 }
 
 .color-picker {

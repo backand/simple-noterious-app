@@ -57,9 +57,6 @@
       if (isValid) {
         self.loading = true;
 
-        //note.users.push({id:3});
-        delete note.users; //todo: temp until the issue with the users will be fixed
-
         NotesModel.update(noteId, note)
           .then(function () {
             self.getBoard();
@@ -102,6 +99,18 @@
       self.editedNote = null;
       self.isEditing = false;
     };
+
+    self.s3FileUpload = function(fileName, fileData, note){
+      NotesModel.s3FileUpload(fileName, fileData)
+          .then(function(res){
+            //update the URL in the note and save
+            note.image = res.data.url;
+            self.updateNote(note.id, note, true)
+          })
+          .catch(function (err) {
+            console.log("err in upload" + err)
+          })
+    }
 
     self.getBoard();
   }

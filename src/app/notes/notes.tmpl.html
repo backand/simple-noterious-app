@@ -46,9 +46,11 @@
           class="col-sm-4"
           ng-repeat="(id, note) in notesCtrl.notes"
           note="note"
-          update="dotesCtrl.updateNote(noteId, note, isValid)"
-          remove="notesCtrl.deleteNote(noteId)">
+          update="notesCtrl.updateNote(noteId, note, isValid)"
+          remove="notesCtrl.deleteNote(noteId)"
+          upload="notesCtrl.s3FileUpload(fileName, fileData, note)">
       </div>
     </div>
+  </div>
   </div>
 </div>
