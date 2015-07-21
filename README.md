@@ -397,7 +397,8 @@ We have almost fully secured our application. At this point, any user can still 
   ```
   EXISTS (select users_boards.id from users_boards
     LEFT JOIN users ON users_boards.member = users.id
-  WHERE users_boards.board = boards.id AND (users.email = '{{sys::username}}' OR isPublic=1))
+  WHERE users_boards.board = boards.id AND 
+        (users.email = '{{sys::username}}' OR isPublic=1))
   ```
 6. To test it, you can can change back the function 'self.getBoards' in 'app/boards/boards-controller.js' to use BoardsModel.all() and see it returns only the correct boards.
 
@@ -454,8 +455,11 @@ Upload the files required Angular code to get the binary content of the file and
 
     var data = 
 		{
-            "key" : "AKIAIJX26SY3COIWV4FQ", // enter your aws key
-            "secret" : "ogun3pSOyw8FtP5i17s2STBPO9jQ8cs+lnpxwg82", // enter your aws secret key
+		    // enter your aws key
+            "key" : "AKIAIJX26SY3COIWV4FQ", 
+            
+            // enter your aws secret key
+            "secret" : "ogun3pSOyw8FtP5i17s2STBPO9jQ8cs+lnpxwg82", 
 
             // this should be sent in post body
             "filename" : parameters.filename, 
@@ -465,7 +469,8 @@ Upload the files required Angular code to get the binary content of the file and
         	"bucket" : "backand-free-upload"
         	
 		}
-    var response = $http({method:"PUT",url:CONSTS.apiUrl + "/1/file/s3" , data: data, headers: {"Authorization":userProfile.token}});
+    var response = $http({method:"PUT",url:CONSTS.apiUrl + "/1/file/s3" , 
+                   data: data, headers: {"Authorization":userProfile.token}});
 
 	return response;
 
