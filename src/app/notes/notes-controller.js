@@ -57,9 +57,6 @@
       if (isValid) {
         self.loading = true;
 
-        //note.users.push({id:3});
-        delete note.users; //todo: temp until the issue with the users will be fixed
-
         NotesModel.update(noteId, note)
           .then(function () {
             self.getBoard();
@@ -86,30 +83,6 @@
         });
     };
 
-    self.imageChanged = function(element, note) {
-      var data = element;
-      // $apply(function(scope) {
-      var photofile = data.files[0];
-      var filename = photofile.name;
-      var reader = new FileReader();
-      reader.onload = function(e) {
-        var b64 = e.currentTarget.result;
-        var filedata = b64;
-        console.log('b64='+b64);
-        //filedata = b64.substring(b64.indexOf("base64,") + 7);
-        //console.log('filedata='+filedata);
-        //var filedata = atob(filedata);
-        //console.log('filedata='+filedata);
-        NotesModel.s3FileUpload(filename, filedata, function(res){
-          note.image = res.url;
-        }, function(err){
-
-        });
-      };
-      reader.readAsDataURL(photofile);
-      // });
-
-    };
     self.setEditedNote = function(noteId, note) {
       self.editedNoteId = noteId;
       self.editedNote = angular.copy(note);
@@ -126,6 +99,18 @@
       self.editedNote = null;
       self.isEditing = false;
     };
+
+    self.s3FileUpload = function(fileName, fileData, note){
+      NotesModel.s3FileUpload(fileName, fileData)
+          .then(function(res){
+            //update the URL in the note and save
+            note.image = res.data.url;
+            self.updateNote(note.id, note, true)
+          })
+          .catch(function (err) {
+            console.log("err in upload" + err)
+          })
+    }
 
     self.getBoard();
   }

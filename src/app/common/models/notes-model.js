@@ -5,7 +5,7 @@
     .service('NotesModel', ['$http', 'Backand', 'extractData', NotesModel]);
 
   function NotesModel ($http, Backand, extractData) {
-    var service = this;
+    var self = this;
 
     function getUrl() {
       return Backand.getApiUrl() + '/1/objects/notes';
@@ -15,31 +15,30 @@
       return Backand.getApiUrl() + '/1/objects/notes/' + noteId;
     }
 
-    service.all = function () {
+    self.all = function () {
       return $http.get(getUrl()).then(extractData);
     };
 
-    service.fetch = function (noteId) {
+    self.fetch = function (noteId) {
       return $http.get(getUrlForId(noteId)).then(extractData);
     };
 
-    service.create = function (note) {
+    self.create = function (note) {
       return $http.post(getUrl(), note).then(extractData);
     };
 
-    service.update = function (noteId, note) {
+    self.update = function (noteId, note) {
       return $http.put(getUrlForId(noteId), note).then(extractData);
     };
 
-    service.destroy = function (noteId) {
+    self.destroy = function (noteId) {
       return $http.delete(getUrlForId(noteId)).then(extractData);
     };
 
-
-    service.s3FileUpload = function(filename, filedata, success, error)
+    //Send file content in base64 to Backand on-demand action
+    self.s3FileUpload = function(filename, filedata, success, error)
     {
-      console.log('update: filedata.length='+filedata.length);
-      var req = {
+      return $http ({
         method: 'POST',
         url: Backand.getApiUrl() + '/1/objects/action/notes?name=upload2s3',
         headers: {
@@ -48,14 +47,8 @@
         data:
         {
           "filename":filename,
-          "filedata": filedata.replace("data:image/jpeg;base64,", "")
+          "filedata": filedata.substr(filedata.indexOf(',')+1, filedata.length) //need to remove the file prefix type
         }
-      }
-
-      theHttp(req).success(function(res){
-        success(res);
-      }).error(function(err){
-        error(err);
       });
     };
   }

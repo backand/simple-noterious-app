@@ -10,7 +10,7 @@
         note:'=',
         remove:'&',
         update: '&',
-        fileChanged: '&'
+        upload: '&'
       },
       templateUrl: 'app/notes/note.tmpl.html',
       controller: NoteController,
@@ -34,8 +34,19 @@
       self.remove({noteId: self.note.id});
     };
 
-    self.updateNoteImage = function (elem) {
-      self.fileChanged({element: elem, note: self.note});
+    //get the file content after upload and post it to server side
+    self.imageChanged = function(data) {
+
+      self.loading = true;
+
+      //read file content
+      var photoFile = data.files[0];
+      var reader = new FileReader();
+
+      reader.onload = function(e) {
+        self.upload({fileName: photoFile.name, fileData: e.currentTarget.result, note: self.note});
+      };
+      reader.readAsDataURL(photoFile);
     };
   }
 

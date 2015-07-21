@@ -1,34 +1,34 @@
 <div class="edit note">
-  <div class="caption">
-    <button
-        type="button"
-        class="close"
-        ng-click="noteCtrl.deleteNote()">
-      &times;
-    </button>
-    <div>
-      <input
-          type="text"
-          class="medium"
-          ng-model="noteCtrl.note.title"
-          ng-blur="noteCtrl.updateNote()"
-          placeholder="Note Title">
-    </div>
-    <div>
-      <textarea
-          ng-model="noteCtrl.note.content"
-          ng-blur="noteCtrl.updateNote()"
-          placeholder="Note content">
-      </textarea>
-    </div>
-    <div>
-        <input ng-model="noteCtrl.note.image"
-               onchange="console.log(angular.element(this).scope().noteCtrl);angular.element(this).scope().noteCtrl.updateNoteImage(this)"
-                 type="file" accept="*/*" />
+    <div class="caption">
+        <button
+            type="button"
+            class="close"
+            ng-click="noteCtrl.deleteNote()">
+            &times;
+        </button>
+        <div>
+            <input
+                type="text"
+                class="medium"
+                ng-model="noteCtrl.note.title"
+                ng-blur="noteCtrl.updateNote()"
+                placeholder="Note Title"/>
+        </div>
+        <div>
+          <textarea
+              ng-model="noteCtrl.note.content"
+              ng-blur="noteCtrl.updateNote()"
+              placeholder="Note content">
+          </textarea>
+        </div>
+        <br/>
 
-        <button ng-onclick="noteCtrl.file_changed(this, noteCtrl.note)">Upload</button>
-        <img ng-model="noteCtrl.note.image">
+        <div>
+            <img ng-src="{{ noteCtrl.note.image }}" style="max-width:250px;" />
+            <input
+                onchange="angular.element(this).scope().noteCtrl.imageChanged(this)"
+                type="file" accept="*/*" style="width: 83px;"/>
+        </div>
+        <span ng-show="noteCtrl.loading" class="glyphicon glyphicon-refresh"></span>
     </div>
-    <span ng-show="noteCtrl.loading" class="glyphicon glyphicon-refresh"></span>
-  </div>
 </div>
