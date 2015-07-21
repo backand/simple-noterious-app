@@ -163,7 +163,7 @@ Next, we're going to make some changes to the Noterious app. Let's start by open
 
 ### Add new Board
 
-Boards in the demo app can be set to either be public or to be restricted to specific application users. If a board is marked as 'public,' then any user that can log in to the application can see that board. Otherwise, only specific assigned members can view the board. Below we will build out functionality that allows you to add the current user to a new viewable board. We'll do this with Backand's Server Side JavaScript Code action. We will add this action to the users_boards object by performing the following tasks:
+Boards in the demo app can be set to either be public or to be restricted to specific application users. If a board is marked as 'public,' then any user that can log in to the application can see that board. Otherwise, only specific assigned members can view the board. Below we will build out functionality that allows you to add the current user to a new viewable board. We'll do this with Backand's Server Side JavaScript Code action. We will add this action to the boards object by performing the following tasks:
 
 #### Add the current user as a member of the board
 
@@ -189,9 +189,10 @@ Boards in the demo app can be set to either be public or to be restricted to spe
 
   5. Save
 3. Test the action by clicking on 'Test Action' on the right side of the web page. You should see response '200 - OK' and the Debug Console should contain `[{"Key":"member","Value":1},{"Key":"board","Value":null}]`
-4. Next, review the existing code:
-  * In the file `app/common/models/boards-model.js`, the `create` function, after a successful $http.post, calls the `createDefaultMember` function to perform a `$http.get` call to the 'AddDefaultMember' action with the specified board id. So, the control flow for this code segment is:
-  ``` create (Angular function) --> createDefaultMember (Angular function) --> AddDefaultMember (backand Action) ```
+(**NOTE:** let's review the existing code:
+  In the file `app/common/models/boards-model.js`, the `create` function, after a successful $http.post, calls the `createDefaultMember` function to perform a `$http.get` call to the 'AddDefaultMember' action with the specified board id. 
+  The control flow for this code segment is:
+  ``` create (Angular function) --> createDefaultMember (Angular function) --> AddDefaultMember (Backand Action) ```)
   
 Now you can add the first board to your app! From the main application page at [http://localhost:3000](http://localhost:3000), create a new board using the provided box. Enter the board's title in the "Board title" field, and the board's description in the "Board Description" field (note: both fields are required). Finally, hit the "+" icon in the app to create your new board!
   
