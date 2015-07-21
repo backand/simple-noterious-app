@@ -239,7 +239,7 @@ Now we're going to add the ability to send an email when a new board is created.
 
 You should now have a new email in your inbox, demonstrating the action at work! This runs after every new board is created and saved. To test locally, open your application instance at [http://localhost:3000](http://localhost:3000) and create a new board. Once the board has been created, you should receive an email with the subject "New board was added: {board name}"!
 
-## Configure boards list and select members
+## Configure the boards list and select members
 
 While we have a powerful note management app, we can make it more flexible by adding the ability to restrict note boards that are created to specific app users. To do so, we need to first add the ability to select board members from our app's pool of users, and then we need to restrict the user's view to only show those boards of which the user is a member. Well accomplish this by both modifying the app's Angular code and by adding a new custom query to the app's Backand dashboard.
 
@@ -391,8 +391,7 @@ We have almost fully secured our application. At this point, any user can still 
 1. Open the `boards` object from the `Objects` menu.
 2. Open the Seurity tab.
 3. In the 'Pre-defined Filter' section we can add more restrictions that will be part of query Backand run on the database. Because the Pre-defined Filter is done in the server side it can't be overwrite which make it most secure.
-4. Add SQL to make sure we bring the boards that user is member in or public. The code is similar to the 'GetBoardsBasedOnCurrentUser' query (It also possible not to use the query but just the Pre-defined filter).
-5. The SQL should look like the following:
+4. Add SQL to make sure we bring the boards that user is member in or public. The code is similar to the 'GetBoardsBasedOnCurrentUser' query (you can also simply use the pre-defined filter instead of the query). The SQL should look like the following:
 
   ```
   EXISTS (select users_boards.id from users_boards
@@ -400,7 +399,8 @@ We have almost fully secured our application. At this point, any user can still 
   WHERE users_boards.board = boards.id AND 
         (users.email = '{{sys::username}}' OR isPublic=1))
   ```
-6. To test it, you can can change back the function 'self.getBoards' in 'app/boards/boards-controller.js' to use BoardsModel.all() and see it returns only the correct boards.
+
+Now we are ready to test! To test the query, modify the `self.getBoards` function in file 'app/boards/boards-controller.js' so that it uses `BoardsModel.all()`. After this change, refresh your local instance and notice how the code is still pulling in the correct, restricted boards.
 
 
 ## Manage users
@@ -409,7 +409,7 @@ Once the main functionality is completed, we need to configure the users portion
 
 #### Sign-up
 
-In the previous steps, we updated our API Sign-Up token in the angular code to match the value provided in our application's Backand dashboard. First, let's verify that that token is still valid.
+In the previous steps, we updated our API Sign-Up token in the Angular code to match the value provided in our application's Backand dashboard. First, let's verify that that token is still valid.
 
 1. In Backand dashboard under "Security & auth --> Configuration," copy the API Sign-up Token provided.
 2. Open your local copy of Noterious.js (located in the app's 'src' folder under 'app/Noterious.js').
@@ -438,17 +438,19 @@ In addition to registered users, you can also configure your Backand application
 
 ## Upload to AWS S3
 
-Using Backand Actions you can integrate with any REST API service, either by calling directly from the Action using HTTP request or by building your own node.js code and call it.
-In Backand we already created pre-defined server side code that you can use including Upload to AWS S3.
+Backand Actions allow you to integrate with any RESTful API, either by directly calling the API from an Action via an HTTP request or by building custom node.js code and calling it. In this section, we'll work with some useful functionality provided by Backand that allows you to upload data into Amazon's AWS S3 service.
  
-Upload the files required Angular code to get the binary content of the file and Action to call to upload REST API.
+To implement this functionality, we'll use a server-side JavaScript action - the application code to handle images has already been written for you! We simply need to tie it into Backand using the following steps:
 
-1. Open the Action tab for the notes object (which can be found under the "Objects" menu in the Backand dashboard.)
+(**NOTE:** In order to upload data to Amazon S3, you will need to create an account with Amazon. Once you have created your account, replace the "key", "secret", and "bucket" values in the JavaScript code below with the values for your account)
+
+1. Navigate to the Backand dashboard for your application
+2. Open the Action tab for the `notes` object (which can be found under the "Objects" menu in the Backand dashboard.)
 2. Click "+New Action" and enter the following details in the fields provided:
   1. Name: upload2s3
   2. Event Trigger: 'On Demand - Execute via REST API'
   3. Type: Server Side JavaScript Code
-  4. JavaScript Code: Past this code under the `// write your code here` comment, and replace `return {}` command:
+  4. JavaScript Code: Paste this code under the `// write your code here` comment, and replace the `return {}` command:
   
   
     ```javascript
@@ -476,7 +478,9 @@ Upload the files required Angular code to get the binary content of the file and
 
     ```
 
-5. To upload to tour AWS S3, you need to create an account and replace the "key", "secret" and "bucket". In this example you can use Backand free storage.  
-6. Save
-7. To test it, add new note (under any board) and upload new image.
+5. Modify the code above to incorporate your personal AWS account's data - replace `secret`, `key`, and `bucket` with the correct values for your account.
+6. Save the action
+
+
+Now we are ready to add images to our notes. To test the new AWS S3 upload functionality, add a new note to any board in your local app, and upload a new image to that note. Once you've done so, you should be able to see the new image file in your Amazon AWS S3 account!
 
