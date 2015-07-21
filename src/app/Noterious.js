@@ -11,13 +11,14 @@ angular.module('noterious', [
   .config(function ($stateProvider, $urlRouterProvider, $httpProvider, BackandProvider) {
     BackandProvider.manageDefaultHeaders();
 
-    //BackandProvider.setAppName('Your-App-Name');
-    //BackandProvider.setSignUpToken('Your-SignUp-Token');
-    //BackandProvider.setAnonymousToken('Your-Anonymous-Token');
+    BackandProvider.setAppName('Your-App-Name');
+    BackandProvider.setSignUpToken('Your-SignUp-Token');
+    BackandProvider.setAnonymousToken('Your-Anonymous-Token');
 
-    BackandProvider.setAppName('noterious2');
-    BackandProvider.setSignUpToken('84b8ca6d-e0f1-4377-b5f5-4db1960d872e');
-    BackandProvider.setAnonymousToken('690d47ca-9fa0-4ec8-83ee-3d770042ba10');
+    //BackandProvider.setAppName('noterious3');
+    //BackandProvider.setSignUpToken('34b63d4f-4936-403e-9546-dbde9c10d6cb');
+    //BackandProvider.setAnonymousToken('28368428-cf14-4ba5-bb14-abc8b10f5fe7');
+
 
     $httpProvider.interceptors.push('httpInterceptor');
     $urlRouterProvider.otherwise('/login');
