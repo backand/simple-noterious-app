@@ -2,12 +2,12 @@
   'use strict';
 
   angular.module('noterious')
-    .controller('LoginCtrl', ['UserModel', 'Backand', '$state', LoginCtrl]);
+    .controller('LoginCtrl', ['UserModel', 'Backand', '$state','$rootScope', LoginCtrl]);
 
-  function LoginCtrl(UserModel, Backand, $state) {
+  function LoginCtrl(UserModel, Backand, $state, $rootScope) {
     var self = this;
 
-    self._init = function () {
+    function _init () {
       self.reset();
       self.providers = Backand.getSocialProviders();
     };
@@ -23,6 +23,7 @@
         password: self.user.password
       })
         .then(function () {
+          $rootScope.$broadcast('userLogin');
           $state.go('boards');
         })
         .finally(function () {
@@ -37,6 +38,7 @@
         password: self.user.password
       })
         .then(function () {
+          $rootScope.$broadcast('userLogin');
           UserModel.error ? self.error = UserModel.error : $state.go('boards');
         }, function (error) {
           self.error = UserModel.error;
@@ -58,6 +60,7 @@
     self.socialLogin = function (provider) {
       UserModel.socialLogin(provider.name, self.user.register)
         .then(function () {
+          $rootScope.$broadcast('userLogin');
           UserModel.error ? self.error = UserModel.error : $state.go('boards');
         }, function () {
           self.error = UserModel.error;
@@ -65,7 +68,7 @@
       );
     };
 
-    self._init();
+    _init();
   }
 
 })();

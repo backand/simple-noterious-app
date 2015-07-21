@@ -2,14 +2,16 @@
  'use strict';
 
   angular.module('noterious')
-    .controller('MainCtrl', ['UserModel', '$state', MainCtrl]);
+    .controller('MainCtrl', ['UserModel', '$state','$scope', MainCtrl]);
 
-  function MainCtrl (UserModel, $state) {
+  function MainCtrl (UserModel, $state, $scope) {
     var self = this;
 
-    self._init = function () {
+    function _init() {
       self.currentUserEmail = UserModel.getCurrentUser();
     };
+
+    $scope.$on('userLogin', _init);
 
     self.logout = function () {
       UserModel.logout()
@@ -19,7 +21,7 @@
         });
     };
 
-    self._init();
+    _init();
   }
 
 })();

@@ -9,7 +9,7 @@
 
     var currentUser = null;
 
-    self._init = function () {
+    function _init () {
       currentUser = Backand.getUsername();
     };
 
@@ -21,7 +21,7 @@
       return Backand.signin(user.email, user.password)
         .then(function (response) {
           self.error = '';
-          currentUser = Backand.getUsername();
+          _init();
         }, function (error) {
           self.error = error && error.error_description || 'Unknown error from server';
           console.log(self.error);
@@ -32,6 +32,7 @@
     self.register = function(user) {
       return Backand.signup(user.email, 'last', user.email, user.password, user.password)
         .then(function(userData) {
+          _init();
           self.error= '';
           console.log('User ' + userData.data.username + ' created successfully!');
           return self.login(user);
@@ -45,6 +46,7 @@
       var socialSignIn = newUser ? Backand.socialSignUp(provider) : Backand.socialSignIn(provider);
       return socialSignIn
         .then(function (userData) {
+          _init();
           self.error = '';
           if (newUser) {
             console.log('User ' + userData.username + ' created successfully!');
@@ -57,10 +59,11 @@
     };
 
     self.logout = function () {
-      return Backand.signout();
+      return Backand.signout()
+          .then(_init);
     };
 
-    self._init();
+    _init();
   }
 
 })();
