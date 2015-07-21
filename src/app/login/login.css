@@ -1,0 +1,81 @@
+.sign-in-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+
+.login-wrap {
+    margin: 20px;
+}
+
+.form-sign-in {
+    min-height: 200px;
+    max-width: 100%;
+    width: 300px;
+    height: 300px;
+    margin: 0 auto;
+    position: relative;
+    padding: 20px;
+    padding-top: 34px;
+    background: #f5ead9;
+}
+
+.form-sign-in .sign-in-title {
+    font-family: "Open Sans","lucida grande","Segoe UI",arial,verdana,"lucida sans unicode",tahoma,sans-serif;
+    font-size: 35px;
+    color: rgb(80, 35, 120);
+}
+
+.form-sign-in .input-group {
+    border-bottom: #ccc solid 1px;
+}
+
+.form-sign-in .input-group.checkbox {
+    border-bottom: none;
+    margin-left: 22px;
+}
+
+.form-sign-in .input-group.checkbox.checkbox-social {
+    margin-left: 35px;
+}
+
+.form-sign-in .input-group.checkbox label {
+    padding-left: 3px;
+}
+
+.form-sign-in .form-control {
+    border: 0;
+    border-radius: 0;
+    font-weight: 300;
+    background: transparent;
+    box-shadow:none;
+
+}
+
+.form-sign-in .input-group-addon {
+    background: transparent;
+    border: 0;
+    font-size: 24px;
+    color: #ccc;
+    padding: 0;
+}
+
+.form-sign-in button {
+    background: rgb(80, 35, 120);
+    border-radius: 2px;
+    width: 100%;
+    border: none;
+    box-shadow: none;
+}
+
+.form-sign-in button:hover {
+    background: indigo;
+}
+
+.sign-in-or {
+    color: white;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+

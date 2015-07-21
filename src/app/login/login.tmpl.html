@@ -1,79 +1,107 @@
-<div class="login-wrap">
-  <form
-    class="form-signin"
-    role="form"
-    name="loginCtrl.loginForm"
-    ng-submit="loginCtrl.loginForm.$valid && loginCtrl.submit()"
-    novalidate
-    >
-    <p class="large">Please Sign In</p>
+<div class="sign-in-container">
+  <div class="login-wrap">
+    <form
+      class="form-horizontal form-sign-in"
+      role="form"
+      name="loginCtrl.loginForm"
+      ng-submit="loginCtrl.loginForm.$valid && loginCtrl.submit()"
+      novalidate>
 
-    <fieldset>
+      <p class="sign-in-title">Sign In</p>
 
-      <div>
-        <input
-          type="email"
-          ng-model="loginCtrl.user.email"
-          placeholder="Enter Email"
-          name="email"
-          required
-          >
-      </div>
-      <div>
-        <input
-          type="password"
-          ng-model="loginCtrl.user.password"
-          placeholder="Enter Password"
-          required
-          >
-      </div>
+      <fieldset>
+        <div class="form-group">
+          <div class="input-group input-group-first">
+        <span class="input-group-addon">
+                  <img src="assets/images/icon-email.svg">
+                </span>
+            <input
+              type="email"
+              ng-model="loginCtrl.user.email"
+              placeholder="email address"
+              name="email"
+              required
+              class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
 
-      <div class="bottom x-small">
-        <label>
-          <input
-            type="checkbox"
-            ng-model="loginCtrl.user.register"
-            >
-          New User?
-        </label>
-      </div>
+          <div class="input-group">
+        <span class="input-group-addon">
+                  <img src="assets/images/icon-pass.svg">
+                </span>
+            <input
+              type="password"
+              ng-model="loginCtrl.user.password"
+              placeholder="password"
+              required
+              class="form-control">
+          </div>
+        </div>
 
-      <button type="submit" class="btn btn-default btn-sm pull-right"
-              ng-disabled="loginCtrl.loading"
-        >
-        <span class="glyphicon glyphicon-ok"></span>
-        Sign In
-        <span ng-show="loginCtrl.loading" class="glyphicon glyphicon-refresh"></span>
-      </button>
-    </fieldset>
-    <div ng-show="loginCtrl.error" class="alert-danger">{{loginCtrl.error}}</div>
-  </form>
-</div>
+        <div class="form-group">
 
-<div class="login-wrap">
-  <div class="form-signin">
+          <div class="input-group checkbox">
+            <div class="">
+              <input
+                id="newUser"
+                type="checkbox"
+                ng-model="loginCtrl.user.register">
+              <label for="newUser">
+                New User?
+              </label>
+            </div>
+          </div>
+        </div>
 
-    <div class="large">
-      Sign in With
-    </div>
+        <div class="form-group">
 
-    <div class="bottom x-small">
-      <label>
-        <input
-          type="checkbox"
-          ng-model="loginCtrl.user.register"
-          >
-        New User?
-      </label>
-    </div>
-    <div>
-      <a class="btn btn-block btn-social"
-         ng-repeat="(providerKey, providerDetails) in loginCtrl.providers"
-         ng-class="'btn-' + providerDetails.name"
-         ng-click="loginCtrl.socialLogin(providerDetails)">
-        <i class="fa" ng-class="'fa-' + providerDetails.css"></i> {{providerDetails.label}}
-      </a>
-    </div>
+          <button type="submit"
+                  class="btn btn-sign-in btn-lg"
+                  ng-disabled="loginCtrl.loading">
+            <img src="assets/images/icon-arrow-right.svg">
+            <span ng-show="loginCtrl.loading" class="glyphicon glyphicon-refresh"></span>
+          </button>
+        </div>
+      </fieldset>
+      <div ng-show="loginCtrl.error" class="alert-danger">{{loginCtrl.error}}</div>
+    </form>
   </div>
 
+  <div class="sign-in-or">
+    or
+  </div>
+
+  <div class="login-wrap">
+    <form class="form-horizontal form-sign-in">
+
+      <p class="sign-in-title">
+        Social Sign In
+      </p>
+
+      <div class="form-group">
+
+        <div class="input-group checkbox checkbox-social">
+          <div class="">
+            <input
+              id="newUserSocial"
+              type="checkbox"
+              ng-model="loginCtrl.user.register">
+            <label for="newUserSocial">
+              New User?
+            </label>
+          </div>
+        </div>
+      </div>
+      <div>
+        <a class="btn btn-block btn-social btn-lg"
+           ng-repeat="(providerKey, providerDetails) in loginCtrl.providers"
+           ng-class="'btn-' + providerDetails.name"
+           ng-click="loginCtrl.socialLogin(providerDetails)">
+          <i class="fa" ng-class="'fa-' + providerDetails.css"></i> {{providerDetails.label}}
+        </a>
+      </div>
+    </form>
+
+  </div>
 </div>

@@ -1,4 +1,4 @@
-<div class="app-wrap bg-{{main.currentColor}}">
+<div class="app-wrap bg-purple">
     <header class="navbar-clear nav-wrap" role="banner">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
@@ -10,25 +10,17 @@
             <a ui-sref="boards" class="navbar-brand"><img src="assets/images/logo.png" alt="noterio.us"/></a>
 
         </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse bg-{{main.currentColor}}">
+        <div class="collapse navbar-collapse navbar-ex1-collapse bg-purple">
             <ul class="nav navbar-nav navbar-right">
-                <li><a class="{{main.currentColor}}" href="http://angularjs.org/" target="_blank">AngularJS</a></li>
-                <li><a class="{{main.currentColor}}" href="http://backand.com/" target="_blank">Back&</a></li>
-                <li><a class="{{main.currentColor}}" href="https://github.com/simpulton/noterious" target="_blank">GitHub</a></li>
-                <li><a class="btn btn-link {{main.currentColor}}" href="" ng-click="main.logout()">{{main.currentUserEmail}} - Logout</a></li>
+                <li><a ui-sref="boards">Boards</a></li>
+                <li ng-hide="main.currentUserEmail"><a ui-sref="login">Guest - Sign In</a></li>
+                <li ng-show="main.currentUserEmail"><a href ng-click="main.logout()">{{main.currentUserEmail}} - Logout</a></li>
             </ul>
         </div>
     </header>
 
-    <div ui-view class="content bg-{{main.currentColor}}"></div>
+    <div ui-view class="content"></div>
 
     <div class="modal"></div>
 
-    <ul class="color-picker">
-        <li><div class="square blue" ng-click="main.setCurrentColor('blue')"></div></li>
-        <li><div class="square green" ng-click="main.setCurrentColor('green')"></div></li>
-        <li><div class="square orange" ng-click="main.setCurrentColor('orange')"></div></li>
-        <li><div class="square red" ng-click="main.setCurrentColor('red')"></div></li>
-        <li><div class="square yellow" ng-click="main.setCurrentColor('yellow')"></div></li>
-    </ul>
 </div>
