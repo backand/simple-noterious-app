@@ -18,11 +18,10 @@
     position: relative;
     padding: 20px;
     padding-top: 34px;
-    background: #f5ead9;
+    background: white;
 }
 
 .form-sign-in .sign-in-title {
-    font-family: "Open Sans","lucida grande","Segoe UI",arial,verdana,"lucida sans unicode",tahoma,sans-serif;
     font-size: 35px;
     color: rgb(80, 35, 120);
 }
@@ -67,6 +66,7 @@
     width: 100%;
     border: none;
     box-shadow: none;
+    color: white;
 }
 
 .form-sign-in button:hover {

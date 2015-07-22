@@ -1,57 +1,64 @@
 <div class="edit board">
-  <div class="caption">
-    <button
-        type="button"
-        class="close"
-        ng-click="boardCtrl.deleteBoard()">
-      &times;
-    </button>
-    <div>
-      <input
-        type="text"
-        class="medium"
-        ng-model="boardCtrl.board.title"
-        ng-blur="boardCtrl.updateBoard()"
-        placeholder="Board Title">
-    </div>
-    <div>
-      <input type="text"
-         ng-model="boardCtrl.board.description"
-         ng-blur="boardCtrl.updateBoard()"
-         placeholder="Board description.">
-    </div>
-    <div>
-      <span>{{boardCtrl.board.dueDate | date:'M/d/yyyy' }}</span>
-    </div>
-    <div class="bottom x-small">
-      <input
-        type="checkbox"
-        ng-model="boardCtrl.board.isPublic"
-        ng-change="boardCtrl.updateBoard()">
-      Board is Public
-    </div>
+  <fieldset>
+    <div class="caption">
+      <img class="board-menu-icon" src="assets/images/icon-three-dots.svg"
+           ng-click="showMenu = !showMenu">
+      </img>
+      <div ng-show="showMenu" class="board-menu">
+        <a href="" ng-click="boardCtrl.board.isPublic = !boardCtrl.board.isPublic; boardCtrl.updateBoard()">Public</a>
+        <input
+          class="cmn-toggle cmn-toggle-round"
+          type="checkbox"
+          ng-model="boardCtrl.board.isPublic"
+          ng-change="boardCtrl.updateBoard()"
+          id="{{boardCtrl.board.title}}">
+        <label for="{{boardCtrl.board.title}}"></label>
+        <a href="" ng-click="showMenu = !showMenu; showCollaborators = !showCollaborators">Collaborators
+          ({{boardCtrl.board.members.length}})</a>
+        <a href="" ng-click="boardCtrl.deleteBoard()">Delete Board</a>
+      </div>
+      <div ng-click="showCollaborators = false">
+        <div>
+          <input
+            type="text"
+            class="medium"
+            ng-model="boardCtrl.board.title"
+            ng-blur="boardCtrl.updateBoard()"
+            placeholder="Board Title">
+        </div>
+        <div>
+          <input type="text"
+                 ng-model="boardCtrl.board.description"
+                 ng-blur="boardCtrl.updateBoard()"
+                 placeholder="Board description.">
+        </div>
+      </div>
+      <div>
+        <span>{{boardCtrl.board.dueDate | date:'M/d/yyyy' }}</span><br>
+      </div>
 
-    <div
-      isteven-multi-select
-      input-model="boardCtrl.board.allMembers"
-      output-model="boardCtrl.board.members"
-      button-label="email"
-      item-label="email"
-      tick-property="isMember"
-      output-properties="email id users_boards_id"
-      max-labels="0"
-      max-height="200px"
-      on-item-click="boardCtrl.updateMember(data)"
-      helper-elements="filter"
-      >
-    </div>
+      <div ng-show="showCollaborators"
+           isteven-multi-select
+           input-model="boardCtrl.board.allMembers"
+           output-model="boardCtrl.board.members"
+           button-label="email"
+           item-label="email"
+           tick-property="isMember"
+           output-properties="email id users_boards_id"
+           max-labels="0"
+           max-height="100px"
+           on-item-click="boardCtrl.updateMember(data)"
+           helper-elements="filter"
+        >
+      </div>
 
-    <a
-      type="button"
-      ui-sref="notes({boardId: boardCtrl.board.id})"
-      class="view arrow-bottom-right btn btn-default">
-      <span class="glyphicon glyphicon-arrow-right"></span>
-    </a>
-    <span ng-show="boardCtrl.loading" class="glyphicon glyphicon-refresh"></span>
-  </div>
+      <span ng-show="boardCtrl.loading" class="glyphicon glyphicon-refresh"></span>
+    </div>
+  </fieldset>
+  <button
+    type="button"
+    ui-sref="notes({boardId: boardCtrl.board.id})"
+    class="btn btn-default btn-board">
+    <img src="assets/images/icon-arrow-right.svg">
+  </button>
 </div>

@@ -5,39 +5,45 @@
       <div class="create board">
         <div class="caption">
           <form
-              name="boardsCtrl.createForm"
-              class="create-form"
-              role="form"
-              ng-submit="boardsCtrl.createBoard(boardsCtrl.newBoard, boardsCtrl.createForm.$valid)"
-              novalidate>
+            name="boardsCtrl.createForm"
+            class="create-form"
+            role="form"
+            ng-submit="boardsCtrl.createBoard(boardsCtrl.newBoard, boardsCtrl.createForm.$valid)"
+            novalidate>
             <fieldset>
               <div>
                 <input
-                    type="text"
-                    class="medium"
-                    ng-model="boardsCtrl.newBoard.title"
-                    placeholder="Board Title"
-                    required>
+                  type="text"
+                  class="medium"
+                  ng-model="boardsCtrl.newBoard.title"
+                  placeholder="Board Name"
+                  required>
               </div>
               <div>
                 <input
-                    type="text"
-                    ng-model="boardsCtrl.newBoard.description"
-                    placeholder="Board description"
-                    required>
+                  type="text"
+                  ng-model="boardsCtrl.newBoard.description"
+                  placeholder="what's it about?"
+                  required>
               </div>
-              <div class="bottom x-small">
+              <br>
+
+              <div class="bottom">
                 <input
-                    type="checkbox"
-                    ng-model="boardsCtrl.newBoard.isPublic">
-                Board is Public
+                  class="cmn-toggle cmn-toggle-round"
+                  type="checkbox"
+                  ng-model="boardsCtrl.newBoard.isPublic"
+                  id="public">
+                <label for="public"></label>
+                <span>Public</span>
               </div>
-              <button
-                  type="submit"
-                  class="bottom-right-corner btn btn-default">
-                <span class="glyphicon glyphicon-plus"></span>
-              </button>
             </fieldset>
+            <button
+              type="submit"
+              class="btn btn-default btn-board">
+              <span class="glyphicon glyphicon-plus"></span>
+              <!--<img src="assets/images/icon-plus.svg">-->
+            </button>
           </form>
         </div>
       </div>
@@ -45,10 +51,10 @@
 
     <!-- EXISTING BOARDS -->
     <div
-        class="col-sm-4"
-        ng-repeat="(id, board) in boardsCtrl.boards track by id"
-        board="board"
-        remove="boardsCtrl.deleteBoard(boardId)">
+      class="col-sm-4"
+      ng-repeat="(id, board) in boardsCtrl.boards track by id"
+      board="board"
+      remove="boardsCtrl.deleteBoard(boardId)">
     </div>
   </div>
 </div>

@@ -59,7 +59,7 @@
           <button type="submit"
                   class="btn btn-sign-in btn-lg"
                   ng-disabled="loginCtrl.loading">
-            <img src="assets/images/icon-arrow-right.svg">
+            <img ng-hide="loginCtrl.loading" src="assets/images/icon-arrow-right.svg">
             <span ng-show="loginCtrl.loading" class="glyphicon glyphicon-refresh"></span>
           </button>
         </div>
