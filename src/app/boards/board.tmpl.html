@@ -5,14 +5,6 @@
            ng-click="showMenu = !showMenu">
       </img>
       <div ng-show="showMenu" class="board-menu">
-        <a href="" ng-click="boardCtrl.board.isPublic = !boardCtrl.board.isPublic; boardCtrl.updateBoard()">Public</a>
-        <input
-          class="cmn-toggle cmn-toggle-round"
-          type="checkbox"
-          ng-model="boardCtrl.board.isPublic"
-          ng-change="boardCtrl.updateBoard()"
-          id="{{boardCtrl.board.title}}">
-        <label for="{{boardCtrl.board.title}}"></label>
         <a href="" ng-click="showMenu = !showMenu; showCollaborators = !showCollaborators">Collaborators
           ({{boardCtrl.board.members.length}})</a>
         <a href="" ng-click="boardCtrl.deleteBoard()">Delete Board</a>
@@ -36,7 +28,16 @@
       <div>
         <span>{{boardCtrl.board.dueDate | date:'M/d/yyyy' }}</span><br>
       </div>
-
+      <div class="bottom">
+        <input
+            class="cmn-toggle cmn-toggle-round"
+            type="checkbox"
+            ng-click="boardCtrl.board.isPublic = !boardCtrl.board.isPublic; boardCtrl.updateBoard()"
+            ng-model="boardCtrl.board.isPublic"
+            id="{{boardCtrl.board.title}}">
+        <label for="{{boardCtrl.board.title}}"></label>
+        <span>Public</span>
+      </div>
       <div ng-show="showCollaborators"
            isteven-multi-select
            input-model="boardCtrl.board.allMembers"
