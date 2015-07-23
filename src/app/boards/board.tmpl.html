@@ -5,9 +5,17 @@
            ng-click="showMenu = !showMenu">
       </img>
       <div ng-show="showMenu" class="board-menu">
-        <a href="" ng-click="showMenu = !showMenu; showCollaborators = !showCollaborators">Collaborators
-          ({{boardCtrl.board.members.length}})</a>
-        <a href="" ng-click="boardCtrl.deleteBoard()">Delete Board</a>
+
+        <div class="board-menu-item"
+             ng-click="showMenu = !showMenu; showCollaborators = !showCollaborators">
+          Collaborators ({{boardCtrl.board.members.length}})
+        </div>
+
+        <div class="board-menu-item"
+             ng-click="boardCtrl.deleteBoard()">
+          Delete Board
+        </div>
+
       </div>
       <div ng-click="showCollaborators = false">
         <div>
