@@ -266,9 +266,14 @@ a.view:hover, a.view:focus {
     width: 150px;
 }
 
-.content .board .board-menu a {
+.content .board .board-menu .board-menu-item {
     color: inherit;
     text-decoration: none;
+}
+
+.content .board .board-menu .board-menu-item:hover {
+    background-color: lightgrey;
+    cursor: pointer;
 }
 
 .content .board label {
