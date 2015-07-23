@@ -54,7 +54,9 @@
       class="col-sm-4"
       ng-repeat="(id, board) in boardsCtrl.boards track by id"
       board="board"
-      remove="boardsCtrl.deleteBoard(boardId)">
+      update="boardsCtrl.updateBoard(boardId, board)"
+      remove="boardsCtrl.deleteBoard(boardId)"
+      member="boardsCtrl.updateMember(member, boardId)">
     </div>
   </div>
 </div>

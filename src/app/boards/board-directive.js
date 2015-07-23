@@ -2,13 +2,15 @@
   'use strict';
 
   angular.module('noterious')
-    .directive('board', ['BoardsModel', 'MemberModel', BoardDirective]);
+    .directive('board', [BoardDirective]);
 
   function BoardDirective() {
     return {
       scope: {
         board: '=',
-        remove: '&'
+        remove: '&',
+        update: '&',
+        member: '&'
       },
       templateUrl: 'app/boards/board.tmpl.html',
       controller: BoardController,
@@ -17,55 +19,31 @@
     }
   }
 
-  function BoardController(BoardsModel, MemberModel) {
+  function BoardController() {
     var self = this;
 
     self._init = function () {
       self.loading = false;
     };
 
-    self.updateBoard = function () {
+    self.updateBoard = function(){
       self.loading = true;
-      BoardsModel.update(self.board.id, self.board)
-        .catch(function (reason) {
-          // alert and revert
-        })
-        .finally(function () {
-          self.loading = false;
-        });
-    };
-
-    self.deleteBoard = function () {
-      BoardsModel.destroy(self.board.id)
-        .catch(function (reason) {
-          //
-        })
-        .finally(function () {
-          self.cancelEditing();
-        });
-    };
-
-    self.updateMember = function (member) {
-      return member.isMember ? addMemberToBoard(member) : removeMemberFromBoard(member);
-    };
-
-    function addMemberToBoard(member) {
-      return BoardsModel.addMemberToBoard(self.board.id, member)
-        .then(function (users_boards_item) {
-          member.users_boards_id = users_boards_item.id;
-        }, function (error) {
-          member.users_boards_id = null;
-          member.isMember = false;
-        })
+      self.update({boardId: self.board.id, board: self.board})
+      .then(function () {
+        self.loading = false;
+      });
     }
 
-    function removeMemberFromBoard(member) {
-      return MemberModel.destroy(member.users_boards_id)
-        .then(function (data) {
-          member.users_boards_id = null;
-        }, function (error) {
-          member.isMember = true;
-        })
+    self.deleteBoard = function(){
+      self.loading = true;
+      self.remove({boardId: self.board.id})
+          .then(function () {
+            self.loading = false;
+          });
+    }
+
+    self.updateMember = function(member){
+      self.member({member: member, boardId: self.board.id});
     }
 
     self._init();

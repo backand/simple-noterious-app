@@ -26,8 +26,8 @@
     self.all = function () {
       return $http.get(getUrl())
           .then(extractData)
-          .then(updateBoards);
-          //.then(addBoardMembers);
+          .then(updateBoards)
+          .then(addBoardMembers);
     };
 
     self.getUsersBoards = function () {
@@ -85,12 +85,12 @@
       return $http.post(getUrl() + '?returnObject=true', board)
         .then(extractData)
         .then(createDefaultMember)
-        .then(updateBoards);
-        //.then(self.getUsersBoards);
+        //.then(updateBoards);
+        .then(self.getUsersBoards);
     };
 
     function createDefaultMember (board) {
-      return $http.get(Backand.getApiUrl() + '/1/objects/action/boards/' + board.id + '?name=AddDefaultMember')
+      return $http.get(Backand.getApiUrl() + '/1/objects/action/boards/' + board.id +'?name=AddDefaultMember')
         .then(extractData);
     }
 

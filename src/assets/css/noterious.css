@@ -251,6 +251,8 @@ a.view:hover, a.view:focus {
 .content img.board-menu-icon {
     position: absolute;
     right: 0px;
+    cursor: pointer;
+
 }
 
 .content .board .board-menu {
