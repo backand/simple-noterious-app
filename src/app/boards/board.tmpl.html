@@ -32,10 +32,10 @@
         <input
             class="cmn-toggle cmn-toggle-round"
             type="checkbox"
-            ng-click="boardCtrl.board.isPublic = !boardCtrl.board.isPublic; boardCtrl.updateBoard()"
+            ng-change="boardCtrl.updateBoard();"
             ng-model="boardCtrl.board.isPublic"
-            id="{{boardCtrl.board.title}}">
-        <label for="{{boardCtrl.board.title}}"></label>
+            id="{{boardCtrl.board.id}}">
+        <label for="{{boardCtrl.board.id}}"></label>
         <span>Public</span>
       </div>
       <div ng-show="showCollaborators"
