@@ -12,6 +12,7 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse bg-purple">
             <ul class="nav navbar-nav navbar-right">
+                <li><a href="https://www.backand.com" target="_blank">Back&</a></li>
                 <li><a ui-sref="boards">Boards</a></li>
                 <li ng-hide="main.currentUserEmail"><a ui-sref="login">Guest - Sign In</a></li>
                 <li ng-show="main.currentUserEmail"><a href ng-click="main.logout()">{{main.currentUserEmail}} - Logout</a></li>
