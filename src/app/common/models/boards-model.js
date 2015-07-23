@@ -85,8 +85,8 @@
       return $http.post(getUrl() + '?returnObject=true', board)
         .then(extractData)
         .then(createDefaultMember)
-        //.then(updateBoards);
-        .then(self.getUsersBoards);
+        .then(updateBoards);
+        //.then(self.getUsersBoards);
     };
 
     function createDefaultMember (board) {
