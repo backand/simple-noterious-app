@@ -282,7 +282,19 @@ The query should return a single row that contains the current user's email and 
       .then(addBoardMembers);
   };
   ```
-3. Go back to the browser [http://localhost:3000/](http://localhost:3000/) and hit 'refresh'. 
+3. In the self.create function, uncomment the getUsersBoards (`.then(self.getUsersBoards);`) and comment the call to updateBoards on the prior line (`.then(updateBoards);`). The resulting code will look like the following:
+ 
+  ```javascript
+  self.create = function (board) {
+    return $http.post(getUrl() + '?returnObject=true', board)
+      .then(extractData)
+      .then(createDefaultMember)
+      //.then(updateBoards);
+      .then(self.getUsersBoards);
+  };
+  ```
+  
+4. Go back to the browser [http://localhost:3000/](http://localhost:3000/) and hit 'refresh'. 
 
 You should now see a drop-down menu on each board item with the value "(1)", indicating that 1 member has been selected for that board. Let's add some more users to really test the functionality!
 
