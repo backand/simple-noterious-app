@@ -4,21 +4,19 @@ angular.module('noterious', [
   'ui.router',
   'ngAnimate',
   'backand',
-  'ngCookies',
   'noterious.common',
   'isteven-multi-select'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $httpProvider, BackandProvider) {
-    BackandProvider.manageDefaultHeaders();
+    //BackandProvider.manageDefaultHeaders();
 
     //BackandProvider.setAppName('bkndnoterious');
     //BackandProvider.setSignUpToken('e1cff5d5-031e-414c-b492-ad76611cac56');
     //BackandProvider.setAnonymousToken('f588ee75-09fb-419d-bc06-a14045815c97');
 
-    BackandProvider.setAppName('Your-App-Name');
-    BackandProvider.setSignUpToken('Your-SignUp-Token');
-    BackandProvider.setAnonymousToken('Your-Anonymous-Token');
-
+    BackandProvider.setAppName('noteriousver2');
+    BackandProvider.setSignUpToken('403bdb84-bc39-4e03-bb9f-7674c9887225');
+    BackandProvider.setAnonymousToken('9e49e396-53a3-4951-8f01-d07f703f449b');
 
     $httpProvider.interceptors.push('httpInterceptor');
     $urlRouterProvider.otherwise('/login');
