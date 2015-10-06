@@ -409,10 +409,10 @@ We have almost fully secured our application. At this point, any user can still 
 4. Add SQL to make sure we bring the boards that user is member in or public. The code is similar to the 'GetBoardsBasedOnCurrentUser' query (you can also simply use the pre-defined filter instead of the query). The SQL should look like the following:
 
   ```
-  EXISTS (select users_boards.id from users_boards
-    LEFT JOIN users ON users_boards.member = users.id
-  WHERE users_boards.board = boards.id AND 
-        (users.email = '{{sys::username}}' OR isPublic=1))
+  EXISTS (SELECT users_boards.id from users_boards
+      LEFT JOIN users ON users_boards.member = users.id
+      WHERE (users_boards.board = boards.id AND 
+      users.email = '{{sys::username}}') OR boards.isPublic=1)
   ```
 
 Now we are ready to test! To test the query, modify the `self.getBoards` function in file 'app/boards/boards-controller.js' so that it uses `BoardsModel.all()`. After this change, refresh your local instance and notice how the code is still pulling in the correct, restricted boards.
