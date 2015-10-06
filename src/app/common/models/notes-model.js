@@ -15,8 +15,9 @@
       return Backand.getApiUrl() + '/1/objects/notes/' + noteId;
     }
 
-    self.all = function () {
-      return $http.get(getUrl()).then(extractData);
+    self.all = function (boardId) {
+      //return $http.get(getUrl() + '?filter=[{"fieldName": "board","operator": "in","value":' + boardId + '}]').then(extractData);
+      return $http.get(Backand.getApiUrl() + '/1/objects/boards/' + boardId + '/notes').then(extractData);
     };
 
     self.fetch = function (noteId) {
@@ -24,7 +25,7 @@
     };
 
     self.create = function (note) {
-      return $http.post(getUrl(), note).then(extractData);
+      return $http.post(getUrl() + '?returnObject=true', note).then(extractData);
     };
 
     self.update = function (noteId, note) {

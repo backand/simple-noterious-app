@@ -2,21 +2,39 @@
 'use strict';
 
 angular.module('noterious')
-  .controller('BoardsCtrl', ['BoardsModel','MemberModel', BoardsCtrl]);
+  .controller('BoardsCtrl', ['BoardsModel','MemberModel','$filter', BoardsCtrl]);
 
-  function BoardsCtrl (BoardsModel, MemberModel) {
+  function BoardsCtrl (BoardsModel, MemberModel, $filter) {
     var self = this;
 
     self._init = function() {
-      self.boards = BoardsModel.boards;
+      self.boards = null;
       self.resetForm();
       self.getBoards();
     };
 
     self.getBoards = function () {
-      //BoardsModel.getUsersBoards();
-      BoardsModel.all();
+      BoardsModel.all()
+        .then(function(data){
+            self.boards = data;
+            MemberModel.all()
+                .then(addMembers);
+          })
     };
+
+    function addMembers(data){
+      self.boards.forEach(function (board) {
+        board.allMembers = angular.copy(data);
+
+        BoardsModel.getUsers(board.id).then(function(users) {
+          users.forEach(function (user) {
+            var member = $filter('filter')(board.allMembers, {id: user.member});
+            if (member.length == 1)
+              member[0].isMember = true;
+          });
+        });
+      });
+    }
 
     self.updateBoard = function (boardId, board) {
       return BoardsModel.update(boardId, board)
@@ -56,28 +74,25 @@ angular.module('noterious')
       }
     };
 
-    self.updateMember = function (member, boardId) {
-      return member.isMember ? addMemberToBoard(member, boardId) : removeMemberFromBoard(member);
+    self.updateMember = function (member, board) {
+      return member.isMember ? addMemberToBoard(member, board) : removeMemberFromBoard(member, board);
     };
 
-    function addMemberToBoard(member, boardId) {
-      return BoardsModel.addMemberToBoard(boardId, member)
-          .then(function (users_boards_item) {
-            member.users_boards_id = users_boards_item.id;
-          }, function (error) {
-            member.users_boards_id = null;
-            member.isMember = false;
-          })
+    function addMemberToBoard(member, board) {
+      board.users.push({member: member.id, board:board.id});
+      BoardsModel.update(board.id,board)
+          .then(function(data){
+            console.log(data);
+          });
     }
 
-    function removeMemberFromBoard(member) {
-      return MemberModel.destroy(member.users_boards_id)
-          .then(function (data) {
-            member.users_boards_id = null;
-          }, function (error) {
-            member.isMember = true;
-          })
+    function removeMemberFromBoard(member, board) {
+      var foundItem = $filter('filter')(board.users, { member:{ id: member.id}  }, true)[0];
+      board.users.splice(board.users.indexOf(foundItem),1);
+
+      BoardsModel.update(board.id,board);
     }
+
 
     self._init();
   }

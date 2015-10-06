@@ -43,7 +43,7 @@
     }
 
     self.updateMember = function(member){
-      self.member({member: member, boardId: self.board.id});
+      self.member({member: member, board: self.board});
     }
 
     self._init();

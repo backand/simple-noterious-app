@@ -11,6 +11,7 @@
 
     self._init = function () {
       self.resetForm();
+      getNotes();
     };
 
     self.goBack = function() {
@@ -25,15 +26,25 @@
       };
     };
 
-    self.getBoard = function () {
-      BoardsModel.fetch(boardId)
-        .then(function (board) {
-          self.board = board;
-          self.notes = board.notes;
+    function getNotes(){
+      NotesModel.all(boardId)
+        .then(function (notes) {
+          self.notes = notes;
         }, function (reason) {
           //
         });
-    };
+
+    }
+
+    //self.getBoard = function () {
+    //  BoardsModel.fetch(boardId)
+    //    .then(function (board) {
+    //      self.board = board;
+    //      self.notes = board.notes;
+    //    }, function (reason) {
+    //      //
+    //    });
+    //};
 
     self.createNote = function (note, isValid) {
       if (isValid) {
@@ -42,7 +53,8 @@
         note.board = boardId;
         NotesModel.create(note)
           .then(function (result) {
-            self.getBoard();
+            //self.getBoard();
+            self.notes.push(note);
           })
           .catch(function (reason) {
             //
@@ -58,8 +70,9 @@
         self.loading = true;
 
         NotesModel.update(noteId, note)
-          .then(function () {
-            self.getBoard();
+          .then(function (data) {
+            console.log(data);
+            //self.getBoard();
           })
           .catch(function (reason) {
             //
@@ -73,7 +86,8 @@
     self.deleteNote = function (noteId) {
       NotesModel.destroy(noteId)
         .then(function (result) {
-          self.getBoard();
+
+          //self.getBoard();
         })
         .catch(function (reason) {
           //
@@ -112,7 +126,7 @@
           })
     }
 
-    self.getBoard();
+    self._init();
   }
 
 })();

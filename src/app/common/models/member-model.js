@@ -29,6 +29,11 @@
       return $http.delete(getUsersBoardsForId(usersBoardsId))
         .then(extractData);
     };
+
+    self.all = function () {
+      return $http.get(Backand.getApiUrl() + '/1/objects/users')
+          .then(extractData);
+    };
   }
 
 })();
