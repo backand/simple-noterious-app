@@ -426,7 +426,7 @@ Once the main functionality is completed, we need to configure the users portion
 
 In the previous steps, we updated our API Sign-Up token in the Angular code to match the value provided in our application's Backand dashboard. First, let's verify that that token is still valid.
 
-1. In Backand dashboard under "Security & auth --> Configuration," copy the API Sign-up Token provided.
+1. In Backand dashboard under "Security & Auth --> Social & Keys," copy the API Sign-up Token provided.
 2. Open your local copy of Noterious.js (located in the app's 'src' folder under 'app/Noterious.js').
 3. In the .config section of Noterious.js, make sure you have this line: BackandProvider.setSignUpToken('##########');
 4. Ensure the value provided in this function matches the value you recorded in step 1.
