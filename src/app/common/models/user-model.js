@@ -34,7 +34,7 @@
         .then(function(userData) {
           _init();
           self.error= '';
-          console.log('User ' + userData.data.username + ' created successfully!');
+          console.log('User ' + userData.username + ' created successfully!');
           return self.login(user);
         }, function (error) {
           self.error = error.error_description || 'Unknown error from server';
