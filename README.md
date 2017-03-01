@@ -461,10 +461,10 @@ To implement this functionality, we'll use a server-side JavaScript action - the
     var data = 
 		{
 		    // enter your aws key
-            "key" : "AKIAIJX26SY3COIWV4FQ", 
+            "key" : "AKIAAKIAAKIAAKIAAKIA", 
             
             // enter your aws secret key
-            "secret" : "ogun3pSOyw8FtP5i17s2STBPO9jQ8cs+lnpxwg82", 
+            "secret" : "ogun3ogun3pogun3pogun3pogun3pogun3pogun3p", 
 
             // this should be sent in post body
             "filename" : parameters.filename, 
